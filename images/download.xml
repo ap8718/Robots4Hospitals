@@ -1,0 +1,26 @@
+<annotation>
+	<folder>training</folder>
+	<filename>download.png</filename>
+	<path>/Users/arunansupatra/Desktop/GroupProject/Gloves/images/training/download.png</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>309</width>
+		<height>163</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>glove</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>69</xmin>
+			<ymin>45</ymin>
+			<xmax>109</xmax>
+			<ymax>95</ymax>
+		</bndbox>
+	</object>
+</annotation>

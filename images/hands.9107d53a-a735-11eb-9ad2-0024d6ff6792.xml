@@ -1,0 +1,38 @@
+<annotation>
+	<folder>collectedimages</folder>
+	<filename>hands.9107d53a-a735-11eb-9ad2-0024d6ff6792.jpg</filename>
+	<path>C:\Users\HP Omen\OneDrive\Desktop\RealTimeObjectDetection\Tensorflow\workspace\images\collectedimages\hands.9107d53a-a735-11eb-9ad2-0024d6ff6792.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>640</width>
+		<height>480</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>hand</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>275</xmin>
+			<ymin>162</ymin>
+			<xmax>371</xmax>
+			<ymax>246</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>hand</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>253</xmin>
+			<ymin>325</ymin>
+			<xmax>334</xmax>
+			<ymax>383</ymax>
+		</bndbox>
+	</object>
+</annotation>

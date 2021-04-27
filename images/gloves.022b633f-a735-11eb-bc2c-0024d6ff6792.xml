@@ -1,0 +1,38 @@
+<annotation>
+	<folder>collectedimages</folder>
+	<filename>gloves.022b633f-a735-11eb-bc2c-0024d6ff6792.jpg</filename>
+	<path>C:\Users\HP Omen\OneDrive\Desktop\RealTimeObjectDetection\Tensorflow\workspace\images\collectedimages\gloves.022b633f-a735-11eb-bc2c-0024d6ff6792.jpg</path>
+	<source>
+		<database>Unknown</database>
+	</source>
+	<size>
+		<width>640</width>
+		<height>480</height>
+		<depth>3</depth>
+	</size>
+	<segmented>0</segmented>
+	<object>
+		<name>glove</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>310</xmin>
+			<ymin>213</ymin>
+			<xmax>401</xmax>
+			<ymax>269</ymax>
+		</bndbox>
+	</object>
+	<object>
+		<name>glove</name>
+		<pose>Unspecified</pose>
+		<truncated>0</truncated>
+		<difficult>0</difficult>
+		<bndbox>
+			<xmin>297</xmin>
+			<ymin>272</ymin>
+			<xmax>392</xmax>
+			<ymax>338</ymax>
+		</bndbox>
+	</object>
+</annotation>

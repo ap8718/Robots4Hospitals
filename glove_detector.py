@@ -21,7 +21,7 @@ detection_model = model_builder.build(model_config=configs['model'], is_training
 
 # Restore checkpoint
 ckpt = tf.compat.v2.train.Checkpoint(model=detection_model)
-ckpt.restore(os.path.join(CHECKPOINT_PATH, 'ckpt-21')).expect_partial()
+ckpt.restore(os.path.join(CHECKPOINT_PATH, 'ckpt-21-DESKTOP-23ED9T2')).expect_partial()
 
 @tf.function
 def detect_fn(image):
@@ -40,7 +40,7 @@ while True:
     frame1 = frame
     
     hsv = cv2.cvtColor(frame1, cv2.COLOR_BGR2HSV)
-    lower_blue = np.array([110,50,50])
+    lower_blue = np.array([110,90,90])
     upper_blue = np.array([130,255,255])
 
     # Threshold the HSV image to get only blue colors

@@ -5,14 +5,16 @@ import sys
 import time
 import vision_definitions
 from PIL import Image
-import detetc_mask_video
-
+import detect_mask_video
+import cv2
+#
 def main(session):
     """
     This is just an example script that shows how images can be accessed
     through ALVideoDevice in Python.
     Nothing interesting is done with the images in this example.
     """
+  
     # Get the service ALVideoDevice.
 
     video_service = session.service("ALVideoDevice")
@@ -23,7 +25,8 @@ def main(session):
     fps = 20
 
     nameId = video_service.subscribe("python_GVM", resolution, colorSpace, fps)
-
+    tts = ALProxy("ALTextToSpeech", "10.0.0.83", 9559)
+    tts.say('Please stay still, I am going to take a picture of you')
     print 'getting images in remote'
     for i in range(0, 1):
         print "getting image " + str(i)
@@ -35,21 +38,45 @@ def main(session):
         image_string = str(bytearray(array))
 
         # Create a PIL Image from our pixel array.
-        im = Image.frombytes("RGB", (imageWidth, imageHeight), image_string)
+        img = Image.frombytes("RGB", (imageWidth, imageHeight), image_string)
 
         # Save the image.
-        im.save(r"imagesFromPepper/camImage.png", "PNG")
+        img.save(r"imagesFromPepper/camImage.png", "PNG")
 
-        im.show()
-        time.sleep(5)
+      
 
     video_service.unsubscribe(nameId)
-
+    picture = cv2.imread(r"imagesFromPepper/camImage.png")
     
+    (locs, preds) = detect_mask_video.detect_and_predict_mask(picture)
+    print((locs, preds) )
+    for (box, pred) in zip(locs, preds):
+        # unpack the bounding box and predictions
+        (startX, startY, endX, endY) = box
+        (mask, withoutMask) = pred
+        print(mask)
+        # determine the class label and color we'll use to draw
+        # the bounding box and text
+        label = "Mask" if mask > withoutMask else "No Mask"
+        color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
+    
+        tts.say( label + ' Detected')
 
-    (locs, preds) = detect_mask_video.detect_and_predict_mask(im)
+        # include the probability in the label
+        label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
 
-    print((locs,preds))
+        # display the label and bounding box rectangle on the output
+        # frame
+        cv2.putText(picture, label, (startX, startY - 10),
+        cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
+        cv2.rectangle(picture, (startX, startY), (endX, endY), color, 2)
+
+	
+	cv2.imshow("Frame", picture)
+
+    while True:	
+        key = cv2.waitKey(1) 
+
     
     
 

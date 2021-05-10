@@ -2,7 +2,9 @@ import qi
 import time
 import sys
 import argparse
-import walk
+import movement
+import takePicture
+from datetime import datetime
 
 
 class HumanGreeter(object):
@@ -11,7 +13,7 @@ class HumanGreeter(object):
     """
 
     def __init__(self, app):
-        """
+        """0
         Initialisation of qi framework and event detection.
         """
         super(HumanGreeter, self).__init__()
@@ -28,7 +30,9 @@ class HumanGreeter(object):
         self.face_detection = session.service("ALSpeechRecognition")
         
         self.face_detection.pause(True)
-        self.face_detection.setVocabulary(["please scan me"], False)
+       
+        # self.face_detection.setVocabulary(["please scan me"], False)
+        
         self.face_detection.pause(False)
         self.face_detection.subscribe("HumanGreeter")
         self.got_face = False
@@ -44,16 +48,20 @@ class HumanGreeter(object):
             self.got_face = True
             print value
             
-            if value[0] == 'please scan me' and value[1] > 0.5:
-                self.tts.say('Commenencing scan in 3')
-                time.sleep(1)
-                self.tts.say('Commenencing scan in 2')
-                time.sleep(1)
-                self.tts.say('Commenencing scan in 1')
-                time.sleep(1)
+            if value[0] == 'please scan me' and value[1] > 0.4:
+                self.tts.say('Commencing scan in 3')
+                time.sleep(0.5)
+                self.tts.say('2')
+                time.sleep(0.5)
+                self.tts.say('1')
+                time.sleep(0.5)
 
+                t1 = datetime.now()
+                movement.main(self.session)
+                takePicture.main(self.session)
+                t2 = datetime.now()
 
-                walk.main(self.session)
+                print( t2, t1)
             
 
             self.got_face = False

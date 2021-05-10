@@ -43,31 +43,7 @@ def main(session):
     tts.say("Please put your arms up like this")
     motion_service.angleInterpolation(names, angleLists, timeLists, isAbsolute)
 
-    # time.sleep(1.0)
-    # names      = ["RElbowRoll",
-    #                 "RShoulderPitch",
-    #                 "RShoulderRoll",
-    #                 "LElbowRoll",  
-    #                 "LShoulderPitch",
-    #                 "LShoulderRoll",]
-    # #              2 angles
-    # angleLists = [[0],
-    #                 [0.0*almath.TO_RAD],
-    #                 [0.0*almath.TO_RAD],
-    #                 [0.0*almath.TO_RAD],
-    #                 [0.0*almath.TO_RAD],
-    #                 [0.0*almath.TO_RAD]]
-    # #              2 times
-    # timeLists  = [[2.0],
-    #                 [2.0],
-    #                 [2.0],
-    #                 [2.0],
-    #                 [2.0],
-    #                 [2.0]]
-    # isAbsolute = True
-    # tts.say("Please put your arms up like this")
-    # motion_service.angleInterpolation(names, angleLists, timeLists, isAbsolute)
-
+  
     time.sleep(1.0)
 
 if __name__ == "__main__":

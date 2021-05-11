@@ -40,7 +40,7 @@ while True:
     frame1 = frame
     
     hsv = cv2.cvtColor(frame1, cv2.COLOR_BGR2HSV)
-    lower_blue = np.array([110,90,90])
+    lower_blue = np.array([110,80,80])
     upper_blue = np.array([130,255,255])
 
     # Threshold the HSV image to get only blue colors

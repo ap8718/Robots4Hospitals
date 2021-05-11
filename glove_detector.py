@@ -47,7 +47,7 @@ while True:
     mask = cv2.inRange(hsv, lower_blue, upper_blue)
     res = cv2.bitwise_and(frame1,frame1, mask= mask)
     filtered_frame = cv2.cvtColor(res, cv2.COLOR_HSV2BGR)
-    cv2.imshow('res',res)
+    #cv2.imshow('res',res)
     
     image_np = np.array(filtered_frame)
     
@@ -62,6 +62,26 @@ while True:
     scores = detections['detection_scores']
     filtered_hand_score1 = scores[0]
     filtered_hand_score2 = scores[1]
+    
+    
+    detections['detection_classes'] = detections['detection_classes'].astype(np.int64)
+
+    label_id_offset = 1
+    image_np_with_detections = image_np.copy()
+
+    viz_utils.visualize_boxes_and_labels_on_image_array(
+                image_np_with_detections,
+                detections['detection_boxes'],
+                detections['detection_classes']+label_id_offset,
+                detections['detection_scores'],
+                category_index,
+                use_normalized_coordinates=True,
+                max_boxes_to_draw=2,
+                min_score_thresh=.7,
+                agnostic_mode=False)
+    cv2.imshow('filtered_image',  cv2.resize(image_np_with_detections, (800, 600)))
+    
+    
     
     image_np = np.array(frame)
     input_tensor = tf.convert_to_tensor(np.expand_dims(image_np, 0), dtype=tf.float32)
@@ -85,9 +105,9 @@ while True:
     
     num_filt_hands = 0
     
-    if filtered_hand_score1 > 0.6 :
+    if filtered_hand_score1 > 0.7 :
         num_filt_hands += 1
-    if filtered_hand_score2 > 0.6 :
+    if filtered_hand_score2 > 0.7 :
         num_filt_hands += 1
     
     if num_filt_hands > num_hands : 

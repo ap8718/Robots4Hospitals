@@ -117,9 +117,9 @@ while True :
             pixel_intensity = int(image_np[y1 + k][x1 + i][0]) + int(image_np[y1 + k][x1 + i][1]) + int(image_np[y1 + k][x1 + i][2])
             if pixel_intensity > 0 : 
                 counter2 += 1
-            image_np[y1 + k][x1 + i][0] = 0
-            image_np[y1 + k][x1 + i][1] = 0
-            image_np[y1 + k][x1 + i][2] = 255
+            #image_np[y1 + k][x1 + i][0] = 0
+            #image_np[y1 + k][x1 + i][1] = 0
+            #image_np[y1 + k][x1 + i][2] = 255
     #cv2.imwrite('img2.jpg', image_np)
     #print(counter)
     #print(counter2)

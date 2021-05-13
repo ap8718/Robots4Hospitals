@@ -5,7 +5,8 @@ import argparse
 import movement
 import takePicture
 from datetime import datetime
-
+import subprocess
+import os
 
 class HumanGreeter(object):
     """
@@ -31,7 +32,7 @@ class HumanGreeter(object):
         
         self.face_detection.pause(True)
        
-        # self.face_detection.setVocabulary(["please scan me"], False)
+        self.face_detection.setVocabulary(["please scan me"], False)
         
         self.face_detection.pause(False)
         self.face_detection.subscribe("HumanGreeter")
@@ -61,7 +62,21 @@ class HumanGreeter(object):
                 takePicture.main(self.session)
                 t2 = datetime.now()
 
-                print( t2, t1)
+                print( 'analyzing visor')
+                os.system('python3 visor2.py')
+                os.system('python3 face_mask_detection.py')
+                
+                mask = open('MaskText', 'r')
+                visor = open('VisorText', 'r')
+
+                self.tts.say(visor.read())
+                self.tts.say(mask.read())
+                print(mask.read())
+
+                if visor.read() == 'Error':
+                    self.tts.say('Sorry, there was an error, please ask me to scan you again')
+                    
+
             
 
             self.got_face = False

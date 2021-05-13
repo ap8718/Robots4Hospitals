@@ -5,7 +5,6 @@ import sys
 import time
 import vision_definitions
 from PIL import Image
-import detect_mask_video
 import cv2
 #
 def main(session):
@@ -46,36 +45,8 @@ def main(session):
       
 
     video_service.unsubscribe(nameId)
-    picture = cv2.imread(r"imagesFromPepper/camImage.png")
-    
-    (locs, preds) = detect_mask_video.detect_and_predict_mask(picture)
-    print((locs, preds) )
-    for (box, pred) in zip(locs, preds):
-        # unpack the bounding box and predictions
-        (startX, startY, endX, endY) = box
-        (mask, withoutMask) = pred
-        print(mask)
-        # determine the class label and color we'll use to draw
-        # the bounding box and text
-        label = "Mask" if mask > withoutMask else "No Mask"
-        color = (0, 255, 0) if label == "Mask" else (0, 0, 255)
-    
-        tts.say( label + ' Detected')
+  
 
-        # include the probability in the label
-        label = "{}: {:.2f}%".format(label, max(mask, withoutMask) * 100)
-
-        # display the label and bounding box rectangle on the output
-        # frame
-        cv2.putText(picture, label, (startX, startY - 10),
-        cv2.FONT_HERSHEY_SIMPLEX, 0.45, color, 2)
-        cv2.rectangle(picture, (startX, startY), (endX, endY), color, 2)
-
-	
-	cv2.imshow("Frame", picture)
-
-    while True:	
-        key = cv2.waitKey(1) 
 
     
     

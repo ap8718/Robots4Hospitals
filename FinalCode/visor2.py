@@ -7,7 +7,6 @@ model = torch.hub.load('ultralytics/yolov5', 'custom', path='visor.pt')  # custo
 img = cv2.imread(r"imagesFromPepper/camImage.png")   
 # Inference
 results = model(img)
-
 results.print()
 try:
     result = int(results.xyxy[0][0][5])
@@ -20,6 +19,6 @@ if result == 1:
 elif result == 0 :
     f.write('Visor Detected')
 else:
-    f.write('Error')
-#results.save(r'imagesFromPepper/', 'visorDetection.png')
+    f.write('Error please scan again')
+
 print(result)

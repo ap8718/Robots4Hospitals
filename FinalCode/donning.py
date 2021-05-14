@@ -50,31 +50,32 @@ class HumanGreeter(object):
             print value
             
             if value[0] == 'please scan me' and value[1] > 0.4:
-                self.tts.say('Commencing scan in 3')
-                time.sleep(0.5)
-                self.tts.say('2')
-                time.sleep(0.5)
-                self.tts.say('1')
-                time.sleep(0.5)
+                self.tts.say('Commencing scan')
+                
 
                 t1 = datetime.now()
                 movement.main(self.session)
                 takePicture.main(self.session)
                 t2 = datetime.now()
+                self.tts.say("Picture Taken")
 
                 print( 'analyzing visor')
                 os.system('python3 visor2.py')
                 os.system('python3 face_mask_detection.py')
+                os.system('python3 glove_detector_pepper.py')
                 
                 mask = open('MaskText', 'r')
                 visor = open('VisorText', 'r')
+                glove = open('GloveText', 'r')
 
                 self.tts.say(visor.read())
+                time.sleep(0.5)
                 self.tts.say(mask.read())
                 print(mask.read())
+                self.tts.say(glove.read())
+                print(glove.read())
 
-                if visor.read() == 'Error':
-                    self.tts.say('Sorry, there was an error, please ask me to scan you again')
+                
                     
 
             

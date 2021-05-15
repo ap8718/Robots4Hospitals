@@ -1,6 +1,6 @@
 import torch
 import cv2
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='gown.pt') 
+model = torch.hub.load('ultralytics/yolov5', 'custom', path='gown_harsh.pt') 
 # Image
 img = cv2.imread(r"imagesFromPepper/camImage.png")
 # Inference

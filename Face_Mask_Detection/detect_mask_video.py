@@ -73,7 +73,7 @@ ap.add_argument("-f", "--face", type=str,
 	default="face_detector",
 	help="path to face detector model directory")
 ap.add_argument("-m", "--model", type=str,
-	default="mask_detector.h5",
+	default="model_mobnetv2.h5",
 	help="path to trained face mask detector model")
 args = vars(ap.parse_args())
 
@@ -87,7 +87,7 @@ faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
 # load the face mask detector model from disk
 print("[INFO] loading face mask detector model...")
-maskNet = load_model('mask_detector.h5')
+maskNet = load_model(args["model"])
 
 # initialize the video stream and allow the camera sensor to warm up
 print("[INFO] starting video stream...")

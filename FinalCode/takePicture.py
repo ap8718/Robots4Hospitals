@@ -44,7 +44,8 @@ def main(session):
 
 
     # Register a Generic Video Module
-    resolution = vision_definitions.k4VGA
+    # resolution = vision_definitions.k4VGA
+    resolution = vision_definitions.kVGA
     colorSpace = vision_definitions.kRGBColorSpace
     fps = 20
 
@@ -85,7 +86,7 @@ def main(session):
  
 
         # Save the image.
-        img.save(r"imagesFromPepper/camImageArjun" + str(i) + ".png", "PNG")
+        img.save(r"imagesFromPepper/gownDoffing" + str(i) + ".png", "PNG")
 
         
 

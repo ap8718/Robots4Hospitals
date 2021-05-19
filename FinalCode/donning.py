@@ -32,7 +32,7 @@ class HumanGreeter(object):
         
         self.face_detection.pause(True)
        
-        self.face_detection.setVocabulary(["please scan me"], False)
+        self.face_detection.setVocabulary(["please scan me"],False)
         
         self.face_detection.pause(False)
         self.face_detection.subscribe("HumanGreeter")
@@ -49,7 +49,7 @@ class HumanGreeter(object):
             self.got_face = True
             print value
             
-            if value[0] == 'please scan me' and value[1] > 0.4:
+            if 'please scan me' in value[0] and value[1] > 0.4:
                 self.tts.say('Commencing scan')
                 
 
@@ -59,21 +59,24 @@ class HumanGreeter(object):
                 t2 = datetime.now()
                 self.tts.say("Picture Taken")
 
-                print( 'analyzing visor')
-                os.system('python3 visor2.py')
-                os.system('python3 face_mask_detection.py')
-                os.system('python3 glove_detector_pepper.py')
+                print( 'analyzing stuff')
+                os.system('python3 CompiledModels.py')
                 
                 mask = open('MaskText', 'r')
                 visor = open('VisorText', 'r')
                 glove = open('GloveText', 'r')
+                gown = open('GownText', 'r')
+
 
                 self.tts.say(visor.read())
                 time.sleep(0.5)
                 self.tts.say(mask.read())
                 print(mask.read())
+                time.sleep(0.5)
                 self.tts.say(glove.read())
+                time.sleep(0.5)
                 print(glove.read())
+                self.tts.say(gown.read())
 
                 
                     

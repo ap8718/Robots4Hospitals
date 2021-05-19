@@ -17,6 +17,13 @@ from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as viz_utils
 from object_detection.builders import model_builder
 
+WORKSPACE_PATH = 'Tensorflow/workspace'
+MODEL_PATH = WORKSPACE_PATH+'/models'
+CONFIG_PATH = MODEL_PATH+'/my_ssd_mobnet/pipeline.config'
+CHECKPOINT_PATH = MODEL_PATH+'/my_ssd_mobnet/'
+CUSTOM_MODEL_NAME = 'my_ssd_mobnet'
+ANNOTATION_PATH = WORKSPACE_PATH+'/annotations'
+CONFIG_PATH = MODEL_PATH+'/'+CUSTOM_MODEL_NAME+'/pipeline.config'
 
 def detect_and_predict_mask(img, faceNet, maskNet):
 	# grab the dimensions of the img and then construct a blob from it
@@ -78,7 +85,7 @@ def detect_and_predict_mask(img, faceNet, maskNet):
 
 visorModel = torch.hub.load('ultralytics/yolov5', 'custom', path='visor.pt')  # custom model
 # Image
-img = cv2.imread(r"imagesFromPepper/camImage.png")   
+img = cv2.imread(r"imagesFromPepper/lesscontrast.png")   
 # Inference
 results = visorModel(img)
 results.print()
@@ -95,7 +102,7 @@ elif result == 0 :
 else:
     f.write('Error please scan again')
 
-print(f.read())
+
 
 
 # MASK DETECTOR
@@ -186,8 +193,7 @@ def detect_gloves(img, showImg = False):
 
     filtered_image = np.array(filtered_img)
 
-    if showImg:
-        cv2.imshow('filtered_image',  cv2.resize(filtered_image, (800, 600)))
+   
 
     image_np = np.array(img)
     input_tensor = tf.convert_to_tensor(np.expand_dims(image_np, 0), dtype=tf.float32)
@@ -262,33 +268,33 @@ def detect_gloves(img, showImg = False):
     f = open("GloveText", 'w')
     f.write(result)
 
-    if showImg:
-        viz_utils.visualize_boxes_and_labels_on_image_array(
-                    image_np_with_detections,
-                    detections['detection_boxes'],
-                    detections['detection_classes']+label_id_offset,
-                    detections['detection_scores'],
-                    category_index,
-                    use_normalized_coordinates=True,
-                    max_boxes_to_draw=2,
-                    min_score_thresh=.6,
-                    agnostic_mode=False)
+    # if showImg:
+    #     viz_utils.visualize_boxes_and_labels_on_image_array(
+    #                 image_np_with_detections,
+    #                 detections['detection_boxes'],
+    #                 detections['detection_classes']+label_id_offset,
+    #                 detections['detection_scores'],
+    #                 category_index,
+    #                 use_normalized_coordinates=True,
+    #                 max_boxes_to_draw=2,
+    #                 min_score_thresh=.6,
+    #                 agnostic_mode=False)
 
-        font = cv2.FONT_HERSHEY_SIMPLEX
-        org = (10, 50)
-        if (num_hands == 1 and num_filt_hands == 1) :
-            cv2.putText(image_np_with_detections, 'glove', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-        if (num_hands == 1 and num_filt_hands == 0) :
-            cv2.putText(image_np_with_detections, 'hand', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-        if (num_hands == 2 and num_filt_hands == 2) :
-            cv2.putText(image_np_with_detections, 'gloves', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-        if (num_hands == 2 and num_filt_hands == 1) :
-            cv2.putText(image_np_with_detections, 'glove + hand', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-        if (num_hands == 2 and num_filt_hands == 0) :
-            cv2.putText(image_np_with_detections, 'hands', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
+    #     font = cv2.FONT_HERSHEY_SIMPLEX
+    #     org = (10, 50)
+    #     if (num_hands == 1 and num_filt_hands == 1) :
+    #         cv2.putText(image_np_with_detections, 'glove', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
+    #     if (num_hands == 1 and num_filt_hands == 0) :
+    #         cv2.putText(image_np_with_detections, 'hand', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
+    #     if (num_hands == 2 and num_filt_hands == 2) :
+    #         cv2.putText(image_np_with_detections, 'gloves', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
+    #     if (num_hands == 2 and num_filt_hands == 1) :
+    #         cv2.putText(image_np_with_detections, 'glove + hand', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
+    #     if (num_hands == 2 and num_filt_hands == 0) :
+    #         cv2.putText(image_np_with_detections, 'hands', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
 
-        cv2.imshow('object detection',  cv2.resize(image_np_with_detections, (800, 600)))
-        cv2.imwrite('glovedetected.png', image_np_with_detections)
+        
+    #     cv2.imwrite('glovedetected.png', image_np_with_detections)
 
     return result
 
@@ -320,4 +326,4 @@ elif result == 0 :
 else:
     f.write('Error please scan again')
 
-print(f.read())
+

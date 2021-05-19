@@ -67,8 +67,11 @@ while True:
     # Save the image.
     img.save(r"imagesFromPepper/liveStream.png", "PNG")
 
-    frame = cv2.imread('imagesFromPepper/liveStreams.png')
-    result, frame = cv2.imencode('.jpg', frame, encode_param)
+    frame = cv2.imread('imagesFromPepper/liveStream.png')
+    try:
+        result, frame = cv2.imencode('.jpg', frame, encode_param)
+    except:
+        continue
 #    data = zlib.compress(pickle.dumps(frame, 0))
     data = pickle.dumps(frame, 0)
     size = len(data)

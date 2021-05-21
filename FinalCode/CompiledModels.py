@@ -85,22 +85,29 @@ def detect_and_predict_mask(img, faceNet, maskNet):
 
 visorModel = torch.hub.load('ultralytics/yolov5', 'custom', path='visor.pt')  # custom model
 # Image
-img = cv2.imread(r"imagesFromPepper/lesscontrast.png")   
-# Inference
-results = visorModel(img)
-results.print()
-try:
-    result = int(results.xyxy[0][0][5])
-except:
-    result = 9
+
+resultlist = []
+for i in range(0,5):
+    img =cv2.imread(r"imagesFromPepper/analysis" + str(i) + ".png")
+    result = visorModel(img)
+    try:
+        result = int(result.xyxy[0][0][5])
+    except:
+        result = -1
+    resultlist.append(result)
+
+print(resultlist)
+mode = max(set(resultlist), key=resultlist.count)
+print(mode)
+
 f = open('VisorText','w')
 
-if result == 1:
+if mode == 1:
         f.write('Visor not detected')
-elif result == 0 :
+elif mode == 0 :
     f.write('Visor Detected')
 else:
-    f.write('Error please scan again')
+    f.write('Visor not detected')
 
 
 
@@ -109,56 +116,56 @@ else:
 #######################################################################################################
 
 
-ap = argparse.ArgumentParser()
-ap.add_argument("-f", "--face", type=str,
-	default="face_detector",
-	help="path to face detector model directory")
-ap.add_argument("-m", "--model", type=str,
-	default="mask_detector.h5",
-	help="path to trained face mask detector model")
-args = vars(ap.parse_args())
+# ap = argparse.ArgumentParser()
+# ap.add_argument("-f", "--face", type=str,
+# 	default="face_detector",
+# 	help="path to face detector model directory")
+# ap.add_argument("-m", "--model", type=str,
+# 	default="mask_detector.h5",
+# 	help="path to trained face mask detector model")
+# args = vars(ap.parse_args())
 
-print("[INFO] loading face detector model...")
-prototxtPath = os.path.sep.join([args["face"], "deploy.prototxt"])
-weightsPath = os.path.sep.join([args["face"],
-	"res10_300x300_ssd_iter_140000.caffemodel"])
-faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
+# print("[INFO] loading face detector model...")
+# prototxtPath = os.path.sep.join([args["face"], "deploy.prototxt"])
+# weightsPath = os.path.sep.join([args["face"],
+# 	"res10_300x300_ssd_iter_140000.caffemodel"])
+# faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
 
-# load the face mask detector model from disk
-print("[INFO] loading face mask detector model...")
-maskNet = load_model('mask_detector.h5')
+# # load the face mask detector model from disk
+# print("[INFO] loading face mask detector model...")
+# maskNet = load_model('mask_detector.h5')
 
-# initialize the video stream and allow the camera sensor to warm u
-	# grab the img from the threaded video stream and resize it to have a maximum width of 400 pixels
-img = cv2.imread(r"imagesFromPepper/camImage.png") 
+# # initialize the video stream and allow the camera sensor to warm u
+# 	# grab the img from the threaded video stream and resize it to have a maximum width of 400 pixels
+# img = cv2.imread(r"imagesFromPepper/analysis0.png") 
 
-# detect faces in the img and determine if they are wearing a face mask or not
-(locs, preds) = detect_and_predict_mask(img, faceNet, maskNet)
+# # detect faces in the img and determine if they are wearing a face mask or not
+# (locs, preds) = detect_and_predict_mask(img, faceNet, maskNet)
 
-for (box, pred) in zip(locs, preds):
-    # unpack the bounding box and predictions
-    (startX, startY, endX, endY) = box
-    (incorrectMask, mask, withoutMask) = pred
+# for (box, pred) in zip(locs, preds):
+#     # unpack the bounding box and predictions
+#     (startX, startY, endX, endY) = box
+#     (incorrectMask, mask, withoutMask) = pred
 
-    f = open('MaskText','w')
+#     f = open('MaskText','w')
 
-    # determine the class label and color we'll use to draw the bounding box and text
-    if(mask > withoutMask) and (mask > incorrectMask):
-        label = "Mask"
-        f.write('Mask correctly detected')
+#     # determine the class label and color we'll use to draw the bounding box and text
+#     if(mask > withoutMask) and (mask > incorrectMask):
+#         label = "Mask"
+#         f.write('Mask correctly detected')
         
     
-        color = (0, 255, 0)
+#         color = (0, 255, 0)
     
-    elif(withoutMask > mask) and (withoutMask > incorrectMask):
-        label = "No mask"
-        color = (0, 0, 255)
-        f.write('No mask detected')
+#     elif(withoutMask > mask) and (withoutMask > incorrectMask):
+#         label = "No mask"
+#         color = (0, 0, 255)
+#         f.write('No mask detected')
 
-    else:
-        label = "Incorrectly Worn mask"
-        color = (0, 255, 255)
-        f.write('Mask worn incorrectly detected')
+#     else:
+#         label = "Incorrectly Worn mask"
+#         color = (0, 255, 255)
+#         f.write('Mask worn incorrectly detected')
 
 # GLOVE DETECTOR
 #######################################################################################################
@@ -268,41 +275,21 @@ def detect_gloves(img, showImg = False):
     f = open("GloveText", 'w')
     f.write(result)
 
-    # if showImg:
-    #     viz_utils.visualize_boxes_and_labels_on_image_array(
-    #                 image_np_with_detections,
-    #                 detections['detection_boxes'],
-    #                 detections['detection_classes']+label_id_offset,
-    #                 detections['detection_scores'],
-    #                 category_index,
-    #                 use_normalized_coordinates=True,
-    #                 max_boxes_to_draw=2,
-    #                 min_score_thresh=.6,
-    #                 agnostic_mode=False)
-
-    #     font = cv2.FONT_HERSHEY_SIMPLEX
-    #     org = (10, 50)
-    #     if (num_hands == 1 and num_filt_hands == 1) :
-    #         cv2.putText(image_np_with_detections, 'glove', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-    #     if (num_hands == 1 and num_filt_hands == 0) :
-    #         cv2.putText(image_np_with_detections, 'hand', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-    #     if (num_hands == 2 and num_filt_hands == 2) :
-    #         cv2.putText(image_np_with_detections, 'gloves', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-    #     if (num_hands == 2 and num_filt_hands == 1) :
-    #         cv2.putText(image_np_with_detections, 'glove + hand', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-    #     if (num_hands == 2 and num_filt_hands == 0) :
-    #         cv2.putText(image_np_with_detections, 'hands', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-
-        
-    #     cv2.imwrite('glovedetected.png', image_np_with_detections)
 
     return result
+resultlist = []
+for i in range(0,5):
+    img =cv2.imread(r"imagesFromPepper/analysis" + str(i) + ".png")
+    height, width, channels = img.shape     
+    result = detect_gloves(img, showImg = True)
+    resultlist.append(result)
 
-height, width, channels = img.shape     
-print(height, width)
-result = detect_gloves(img, showImg = True)
-print(result)
+mode = max(set(resultlist), key=resultlist.count)
 
+
+f = open('GloveText','w')
+
+f.write(mode)
 
 #### GOWN DETECTOR
 
@@ -310,20 +297,29 @@ gownModel = torch.hub.load('ultralytics/yolov5', 'custom', path='gown_harsh.pt')
 # Image
 
 # Inference
-results = gownModel(img)
 
-results.print()
-try:
-    result = int(results.xyxy[0][0][5])
-except:
-    result = 9
+
+resultlist = []
+for i in range(0,5):
+    img =cv2.imread(r"imagesFromPepper/analysis" + str(i) + ".png")
+    result = gownModel(img)
+    result.print()
+    try:
+        result = int(result.xyxy[0][0][5])
+        print(result)
+    except:
+        result = -1
+    resultlist.append(result)
+
+mode = max(set(resultlist), key=resultlist.count)
+
 f = open('GownText','w')
 
-if result == 1:
+if mode == 1:
         f.write('Gown not detected')
-elif result == 0 :
+elif mode == 0 :
     f.write('Gown Detected')
 else:
-    f.write('Error please scan again')
+    f.write('Gown not detected')
 
 

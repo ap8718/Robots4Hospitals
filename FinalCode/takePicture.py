@@ -8,25 +8,7 @@ import cv2
 import almath
 from PIL import Image, ImageEnhance
 
-def merge_images(file1, file2):
-    """Merge two images into one, displayed side by side
-    :param file1: path to first image file
-    :param file2: path to second image file
-    :return: the merged Image object
-    """
-    image1 = Image.open(file1)
-    image2 = Image.open(file2)
 
-    (width1, height1) = image1.size
-    (width2, height2) = image2.size
-
-    result_width = width1 
-    result_height = height1 + height2
-
-    result = Image.new('RGB', (result_width, result_height))
-    result.paste(im=image1, box=(0, 0))
-    result.paste(im=image2, box=(0, height1))
-    return result
 
 
 def main(session):
@@ -58,7 +40,7 @@ def main(session):
     motion_service  = session.service("ALMotion")
 
     print 'getting images in remote'
-    for i in range(0, 50):
+    for i in range(0, 5):
         bap.pauseAwareness()
         print "getting image " + str(i)
         motion_service.setStiffnesses("Head", 1.0)
@@ -86,7 +68,7 @@ def main(session):
  
 
         # Save the image.
-        img.save(r"imagesFromPepper/gownDoffing" + str(i) + ".png", "PNG")
+        img.save(r"imagesFromPepper/analysis" + str(i) + ".png", "PNG")
 
         
 

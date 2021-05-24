@@ -14,6 +14,27 @@ def main(session):
     ms.setStiffnesses("LArm", 1.0)
     ms.setStiffnesses("RArm", 1.0)
 
+    # names = [
+    #     "RElbowRoll",
+    #     "RElbowYaw",
+    #     "RShoulderPitch",
+    #
+    #     "LElbowRoll",
+    #     "LElbowYaw",
+    #     "LShoulderPitch",
+    # ]
+
+    # angles = [
+    #     90.0,
+    #     -90.0
+    #     0.0,
+    #
+    #
+    #     -90.0,
+    #     90.0
+    #     0.0,
+    # ]
+
     names = [
         "RElbowRoll",
         "RShoulderPitch",
@@ -30,12 +51,12 @@ def main(session):
         80.0,
         0.0,
         -50.0,
-        60.0,
+        -60.0,
 
         -80.0,
         0.0,
         50.0,
-        -60.0,
+        60.0,
     ]
     angles = [i*almath.TO_RAD for i in angles]
     times = [3.0] * len(names)

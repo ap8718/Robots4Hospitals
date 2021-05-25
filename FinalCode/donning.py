@@ -57,7 +57,7 @@ class HumanGreeter(object):
                 movement.main(self.session)
                 takePicture.main(self.session)
                 t2 = datetime.now()
-                self.tts.say("Picture Taken")
+                
 
                 print( 'analyzing stuff')
                 os.system('python3 CompiledModels.py')

@@ -4,6 +4,7 @@ import sys
 import time
 import almath
 from naoqi import ALProxy
+import numpy as np
 
 
 def main(session):
@@ -19,6 +20,7 @@ def main(session):
 
     motion_service.setStiffnesses("Elbow", 1.0)
     motion_service.setStiffnesses("RShoulder", 1.0)
+    motion_service.setStiffnesses("LShoulder", 1.0)
     motion_service.setStiffnesses("Wrist", 1.0)
     motion_service.setStiffnesses("ShoulderPitch", 1.0)
 
@@ -31,20 +33,45 @@ def main(session):
                     "LShoulderPitch",
                     "LShoulderRoll",]
     #              2 angles
-    angleLists = [[70.0*almath.TO_RAD,70.0*almath.TO_RAD],
-                    [30.0*almath.TO_RAD,30.0*almath.TO_RAD],
-                    [-30.0*almath.TO_RAD,-30.0*almath.TO_RAD],
-                    [-70.0*almath.TO_RAD,-70.0*almath.TO_RAD],
-                    [30.0*almath.TO_RAD,30.0*almath.TO_RAD],
-                    [30.0*almath.TO_RAD,30.0*almath.TO_RAD]]
+    angleLists = [[70.0,70.0],
+                    [30.0,30.0],
+                    [-30.0,-30.0],
+                    [-70.0,-70.0],
+                    [30.0,30.0],
+                    [30.0,30.0]]
     #              2 times
     timeLists  = [[2.0,8.0],[2.0,8.0],[2.0,8.0],[2.0,8.0],[2.0,8.0],[2.0,8.0]]
+
+    # names = [
+    #     "RShoulderPitch",
+    #     "RShoulderRoll"
+    # ]
+
+    # angleLists = [
+    #     [50.], 
+    #     [-30.],   #10., 20., 
+    # ]
+
+    angleLists  = [[i*(np.pi/180) for i in inner] for inner in angleLists]
+    print(angleLists)
+   
+    #              2 times
+    # timeLists  = [[1,2.0,3,4,8.0],[1,2.0,3,4,8.0],[2.0,8.0],[1,2.0,3,4,8.0],[2.0,8.0],[2.0,8.0]]
+    # timeLists = [1., 2., 3., 5., 6, 7., 8.]
+    # timeLists = [[2.], [2.]]
     isAbsolute = True
     tts.say("Please put your arms up like this")
+    print("Putting arms up")
     motion_service.angleInterpolation(names, angleLists, timeLists, isAbsolute)
-
+    print([(180/np.pi)*i for i in motion_service.getAngles("RArm", False)])
   
     time.sleep(1.0)
+
+    # angleLists = [[30., 0.]]
+    # angleLists  = [[i*(np.pi/180) for i in inner] for inner in angleLists]
+    # timeLists = [1., 2., 3., 4.]
+    # print("Putting arms down")
+    # motion_service.angleInterpolation(names, angleLists, timeLists, isAbsolute)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

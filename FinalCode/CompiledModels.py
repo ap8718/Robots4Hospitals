@@ -1,5 +1,6 @@
 import torch
 import tensorflow as tf
+from PIL import Image
 from torchvision.utils import save_image
 import cv2
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
@@ -88,12 +89,11 @@ visorModel = torch.hub.load('ultralytics/yolov5', 'custom', path='visor.pt')  # 
 
 resultlist = []
 for i in range(0,5):
-    img =cv2.imread(r"imagesFromPepper/analysis" + str(i) + ".png")
-    result = visorModel(img)
-    try:
-        result = int(result.xyxy[0][0][5])
-    except:
-        result = -1
+    img =Image.open(r"imagesFromPepper/analysis" + str(i) + ".png")
+    resultIMG = visorModel(img)
+    result = int(resultIMG.xyxy[0][0][5])
+    print(result)
+
     resultlist.append(result)
 
 print(resultlist)
@@ -301,17 +301,15 @@ gownModel = torch.hub.load('ultralytics/yolov5', 'custom', path='gown_harsh.pt')
 
 resultlist = []
 for i in range(0,5):
-    img =cv2.imread(r"imagesFromPepper/analysis" + str(i) + ".png")
-    result = gownModel(img)
-    result.print()
-    try:
-        result = int(result.xyxy[0][0][5])
-        print(result)
-    except:
-        result = -1
+    img =Image.open(r"imagesFromPepper/analysis" + str(i) + ".png")
+    resultIMG = gownModel(img)
+    result = int(resultIMG.xyxy[0][0][5])
+    print(result)
     resultlist.append(result)
 
+print(resultlist)
 mode = max(set(resultlist), key=resultlist.count)
+print(mode)
 
 f = open('GownText','w')
 

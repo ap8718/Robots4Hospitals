@@ -7,6 +7,7 @@ import vision_definitions
 import cv2
 import almath
 from PIL import Image, ImageEnhance
+import tablet
 
 
 
@@ -84,6 +85,7 @@ def main(session):
     #result.save(r"imagesFromPepper/camImage.png", "PNG")
       
     tts.say('Picture taken')
+    tablet.main(session)
     video_service.unsubscribe(nameId)
   
 

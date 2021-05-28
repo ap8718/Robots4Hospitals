@@ -26,59 +26,6 @@ CUSTOM_MODEL_NAME = 'my_ssd_mobnet'
 ANNOTATION_PATH = WORKSPACE_PATH+'/annotations'
 CONFIG_PATH = MODEL_PATH+'/'+CUSTOM_MODEL_NAME+'/pipeline.config'
 
-def detect_and_predict_mask(img, faceNet, maskNet):
-	# grab the dimensions of the img and then construct a blob from it
-	(h, w) = img.shape[:2]
-	blob = cv2.dnn.blobFromImage(img, 1.0, (300, 300),
-		(104.0, 177.0, 123.0))
-
-	# pass the blob through the network and obtain the face detections
-	faceNet.setInput(blob)
-	detections = faceNet.forward()
-
-	# initialize our list of faces, their corresponding locations,
-	# and the list of predictions from our face mask network
-	faces = []
-	locs = []
-	preds = []
-
-	# loop over the detections
-	for i in range(0, detections.shape[2]):
-		# extract the confidence (i.e., probability) associated with the detection
-		confidence = detections[0, 0, i, 2]
-
-		# filter out weak detections by ensuring the confidence is greater than the minimum confidence
-		if confidence > 0.55:  # args["confidence"]
-			# compute the (x, y)-coordinates of the bounding box for the object
-			box = detections[0, 0, i, 3:7] * np.array([w, h, w, h])
-			(startX, startY, endX, endY) = box.astype("int")
-
-			# ensure the bounding boxes fall within the dimensions of the img
-			(startX, startY) = (max(0, startX), max(0, startY))
-			(endX, endY) = (min(w - 1, endX), min(h - 1, endY))
-
-			# extract the face ROI, convert it from BGR to RGB channel
-			# ordering, resize it to 224x224, and preprocess it
-			face = img[startY:endY, startX:endX]
-			face = cv2.cvtColor(face, cv2.COLOR_BGR2RGB)
-			face = cv2.resize(face, (224, 224))
-			face = img_to_array(face)
-			face = preprocess_input(face)
-			face = np.expand_dims(face, axis=0)
-
-			# add the face and bounding boxes to their respective lists
-			faces.append(face)
-			locs.append((startX, startY, endX, endY))
-
-	# only make a predictions if at least one face was detected
-	if len(faces) > 0:
-		# for faster inference we'll make batch predictions on *all*
-		# faces at the same time rather than one-by-one predictions
-		# in the above `for` loop
-		preds = maskNet.predict(faces)
-
-	# return a 2-tuple of the face locations and their corresponding locations
-	return (locs, preds)
 
 
 # VISOR DETECTOR
@@ -88,10 +35,13 @@ visorModel = torch.hub.load('ultralytics/yolov5', 'custom', path='visor.pt')  # 
 # Image
 
 resultlist = []
-for i in range(0,5):
+for i in range(0,1):
     img =Image.open(r"imagesFromPepper/analysis" + str(i) + ".png")
     resultIMG = visorModel(img)
-    result = int(resultIMG.xyxy[0][0][5])
+    try:
+        result = int(resultIMG.xyxy[0][0][5])
+    except:
+        result = 2
     print(result)
 
     resultlist.append(result)
@@ -115,57 +65,35 @@ else:
 # MASK DETECTOR
 #######################################################################################################
 
+maskModel = torch.hub.load('ultralytics/yolov5', 'custom', path='mask.pt')  # custom model
+# Image
 
-# ap = argparse.ArgumentParser()
-# ap.add_argument("-f", "--face", type=str,
-# 	default="face_detector",
-# 	help="path to face detector model directory")
-# ap.add_argument("-m", "--model", type=str,
-# 	default="mask_detector.h5",
-# 	help="path to trained face mask detector model")
-# args = vars(ap.parse_args())
+resultlist = []
+for i in range(0,1):
+    img =Image.open(r"imagesFromPepper/analysis" + str(i) + ".png")
+    resultIMG = maskModel(img)
+    try:
+        result = int(resultIMG.xyxy[0][0][5])
+    except:
+        result = 1
+    print(result)
 
-# print("[INFO] loading face detector model...")
-# prototxtPath = os.path.sep.join([args["face"], "deploy.prototxt"])
-# weightsPath = os.path.sep.join([args["face"],
-# 	"res10_300x300_ssd_iter_140000.caffemodel"])
-# faceNet = cv2.dnn.readNet(prototxtPath, weightsPath)
+    resultlist.append(result)
 
-# # load the face mask detector model from disk
-# print("[INFO] loading face mask detector model...")
-# maskNet = load_model('mask_detector.h5')
+print(resultlist)
+mode = max(set(resultlist), key=resultlist.count)
+print(mode)
 
-# # initialize the video stream and allow the camera sensor to warm u
-# 	# grab the img from the threaded video stream and resize it to have a maximum width of 400 pixels
-# img = cv2.imread(r"imagesFromPepper/analysis0.png") 
+f = open('MaskText','w')
 
-# # detect faces in the img and determine if they are wearing a face mask or not
-# (locs, preds) = detect_and_predict_mask(img, faceNet, maskNet)
+if mode == 1:
+        f.write('No Mask detected')
+elif mode == 0 :
+    f.write('Incorrectly Worn Mask Detected')
+else:
+    f.write('Mask detected')
 
-# for (box, pred) in zip(locs, preds):
-#     # unpack the bounding box and predictions
-#     (startX, startY, endX, endY) = box
-#     (incorrectMask, mask, withoutMask) = pred
 
-#     f = open('MaskText','w')
-
-#     # determine the class label and color we'll use to draw the bounding box and text
-#     if(mask > withoutMask) and (mask > incorrectMask):
-#         label = "Mask"
-#         f.write('Mask correctly detected')
-        
-    
-#         color = (0, 255, 0)
-    
-#     elif(withoutMask > mask) and (withoutMask > incorrectMask):
-#         label = "No mask"
-#         color = (0, 0, 255)
-#         f.write('No mask detected')
-
-#     else:
-#         label = "Incorrectly Worn mask"
-#         color = (0, 255, 255)
-#         f.write('Mask worn incorrectly detected')
 
 # GLOVE DETECTOR
 #######################################################################################################
@@ -260,15 +188,15 @@ def detect_gloves(img, showImg = False):
     result = ''
 
     if (num_hands == 1 and num_filt_hands == 1) :
-        result = 'single glove detected '
+        result = 'The gloves are not correctly worn'
     if (num_hands == 1 and num_filt_hands == 0) :
-        result = 'single hand detected'
+        result = 'The gloves are not correctly worn'
     if (num_hands == 2 and num_filt_hands == 2) :
         result = 'both gloves detected'
     if (num_hands == 2 and num_filt_hands == 1) :
-        result = 'a glove and hand detected'
+        result = 'The gloves are not correctly worn'
     if (num_hands == 2 and num_filt_hands == 0) :
-        result = 'only hands detected'
+        result = 'The gloves are not correctly worn'
     # else:
     #     result = 'none'
 
@@ -278,7 +206,7 @@ def detect_gloves(img, showImg = False):
 
     return result
 resultlist = []
-for i in range(0,5):
+for i in range(0,1):
     img =cv2.imread(r"imagesFromPepper/analysis" + str(i) + ".png")
     height, width, channels = img.shape     
     result = detect_gloves(img, showImg = True)
@@ -300,10 +228,13 @@ gownModel = torch.hub.load('ultralytics/yolov5', 'custom', path='gown_harsh.pt')
 
 
 resultlist = []
-for i in range(0,5):
+for i in range(0,1):
     img =Image.open(r"imagesFromPepper/analysis" + str(i) + ".png")
     resultIMG = gownModel(img)
-    result = int(resultIMG.xyxy[0][0][5])
+    try:
+        result = int(resultIMG.xyxy[0][0][5])
+    except:
+        result = 2
     print(result)
     resultlist.append(result)
 

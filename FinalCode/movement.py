@@ -9,12 +9,12 @@ def main(session):
     ms = session.service("ALMotion")
     tts = session.service("ALTextToSpeech")
     # bas = session.service("ALBasicAwareness")
-    bas = ALProxy("ALBasicAwareness", "10.0.0.83", 9559)
+    # bas = ALProxy("ALBasicAwareness", "10.0.0.83", 9559)
 
     # ms.setStiffnesses("Body", 0.0)
-    bas.pauseAwareness()
+    # bas.pauseAwareness()
 
-    print("Awareness paused: " + str(bas.isAwarenessPaused()))
+    # print("Awareness paused: " + str(bas.isAwarenessPaused()))
 
     ms.setStiffnesses("LArm", 1.0)
     ms.setStiffnesses("RArm", 1.0)
@@ -55,15 +55,36 @@ def main(session):
     angs = [i*almath.TO_DEG for i in angs]
     print("Angles: " + str(angs))
 
-    print("Loosening arms...")
+    print("Putting arms down...")
+
+    angles = [
+        0.0,
+        0.0,
+        0.0,
+        90.0,
+        0.0,
+        0.0,
+        0.0,
+        90.0,
+    ]
+
+    angles = [i*almath.TO_RAD for i in angles]
+    times = [2.0] * len(names)
+
+    ms.angleInterpolation(names, angles, times, isAbsolute)
+
+    angs = ms.getAngles(names, False)
+    angs = [i*almath.TO_DEG for i in angs]
+    print("Angles: " + str(angs))
+
     ms.setStiffnesses(names, 0.05)
-    time.sleep(2)
+    # time.sleep(2)
 
     ms.setStiffnesses(names, 0.0)
 
     # print("Awareness paused: " + str(bas.isAwarenessPaused()))
-    bas.resumeAwareness()
-    print("Awareness paused: " + str(bas.isAwarenessPaused()))
+    # bas.resumeAwareness()
+    # print("Awareness paused: " + str(bas.isAwarenessPaused()))
 
     print("All done!")
 

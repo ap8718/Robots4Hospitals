@@ -29,6 +29,8 @@ class HumanGreeter(object):
         # Get the services ALTextToSpeech and ALFaceDetection.
         self.tts = session.service("ALTextToSpeech")
         self.face_detection = session.service("ALSpeechRecognition")
+        self.tablet = session.service("ALTabletService")
+        self.awareness = session.service("ALBasicAwareness")
         
         self.face_detection.pause(True)
        
@@ -50,6 +52,8 @@ class HumanGreeter(object):
             print value
             
             if 'please scan me' in value[0] and value[1] > 0.4:
+                self.awareness.pauseAwareness()
+                print(self.awareness.isAwarenessPaused())
                 self.tts.say('Commencing scan')
                 
 
@@ -77,6 +81,10 @@ class HumanGreeter(object):
                 time.sleep(0.5)
                 print(glove.read())
                 self.tts.say(gown.read())
+
+                self.tablet.hideImage()
+
+                self.awareness.resumeAwareness()
 
                 
                     

@@ -6,9 +6,10 @@ def main(session):
     
     tabletService.showImageNoCache("http://f5f56144bb07.ngrok.io/analysis0.png")
 
-    time.sleep(10)
 
-    tabletService.hideImage()
+    # time.sleep(10)
+
+    # tabletService.hideImage()
 
 if __name__ == "__main__":
     session = qi.Session()

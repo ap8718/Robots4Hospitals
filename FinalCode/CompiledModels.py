@@ -215,9 +215,7 @@ for i in range(0,1):
 mode = max(set(resultlist), key=resultlist.count)
 
 
-f = open('GloveText','w')
 
-f.write(mode)
 
 #### GOWN DETECTOR
 

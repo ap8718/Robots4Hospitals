@@ -6,10 +6,10 @@ import vision_definitions
 # import cv2
 import almath
 from PIL import Image, ImageEnhance
-# import tablet
+import tablet
 
-IP = "root@8.tcp.ngrok.io"
-PORT = "18897"
+IP = "root@4.tcp.ngrok.io"
+PORT = "16305"
 
 
 def main(session):
@@ -74,7 +74,7 @@ def main(session):
     #result.save(r"imagesFromPepper/camImage.png", "PNG")
 
     tts.say('Picture taken')
-    # tablet.main(session)
+    tablet.main(session)
     bap.resumeAwareness()
     video_service.unsubscribe(nameId)
 

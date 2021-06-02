@@ -215,9 +215,11 @@ for i in range(0,1):
 mode = max(set(resultlist), key=resultlist.count)
 
 
+<<<<<<< HEAD
+=======
 f = open('Results/GloveText','w')
+>>>>>>> 46de0fe3ffff3c9a5db774bcc94230ba8eee57ec
 
-f.write(mode)
 
 #### GOWN DETECTOR
 

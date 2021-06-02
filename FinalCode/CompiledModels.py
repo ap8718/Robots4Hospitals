@@ -50,7 +50,7 @@ print(resultlist)
 mode = max(set(resultlist), key=resultlist.count)
 print(mode)
 
-f = open('VisorText','w')
+f = open('Results/VisorText','w')
 
 if mode == 1:
         f.write('Visor not detected')
@@ -84,7 +84,7 @@ print(resultlist)
 mode = max(set(resultlist), key=resultlist.count)
 print(mode)
 
-f = open('MaskText','w')
+f = open('Results/MaskText','w')
 
 if mode == 1:
         f.write('No Mask detected')
@@ -200,7 +200,7 @@ def detect_gloves(img, showImg = False):
     # else:
     #     result = 'none'
 
-    f = open("GloveText", 'w')
+    f = open("Results/GloveText", 'w')
     f.write(result)
 
 
@@ -215,7 +215,7 @@ for i in range(0,1):
 mode = max(set(resultlist), key=resultlist.count)
 
 
-f = open('GloveText','w')
+f = open('Results/GloveText','w')
 
 f.write(mode)
 
@@ -242,7 +242,7 @@ print(resultlist)
 mode = max(set(resultlist), key=resultlist.count)
 print(mode)
 
-f = open('GownText','w')
+f = open('Results/GownText','w')
 
 if mode == 1:
         f.write('Gown not detected')

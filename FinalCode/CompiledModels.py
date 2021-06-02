@@ -128,8 +128,6 @@ def detect_gloves(img, showImg = False):
 
     filtered_image = np.array(filtered_img)
 
-   
-
     image_np = np.array(img)
     input_tensor = tf.convert_to_tensor(np.expand_dims(image_np, 0), dtype=tf.float32)
     detections = detect_fn(input_tensor)
@@ -188,9 +186,9 @@ def detect_gloves(img, showImg = False):
     result = ''
 
     if (num_hands == 2 and num_filt_hands == 2):
-        results = 'Both gloves detected'
+        result = 'Both gloves detected'
     else:
-        results = 'The gloves are not correctly worn'
+        result = 'The gloves are not correctly worn'
 
 #    if (num_hands == 1 and num_filt_hands == 1) :
 #        result = 'The gloves are not correctly worn'
@@ -205,6 +203,7 @@ def detect_gloves(img, showImg = False):
     # else:
     #     result = 'none'
 
+    print("\n" + result + "\n")
     f = open("Results/GloveText", 'w')
     f.write(result)
 
@@ -218,12 +217,14 @@ for i in range(0,1):
     result = detect_gloves(img, showImg = True)
 #    resultlist.append(result)
 
-# mode = max(set(resultlist), key=resultlist.count)
-
+#print(resultlist)
+#mode = max(set(resultlist), key=resultlist.count)
 
 #<<<<<<< HEAD
 #=======
+print("\n" + result + "\n")
 #f = open('Results/GloveText','w')
+#f.write(result)
 #>>>>>>> 46de0fe3ffff3c9a5db774bcc94230ba8eee57ec
 
 
@@ -258,5 +259,3 @@ elif mode == 0 :
     f.write('Gown Detected')
 else:
     f.write('Gown not detected')
-
-

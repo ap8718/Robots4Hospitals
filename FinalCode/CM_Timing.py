@@ -32,7 +32,7 @@ MaskTimes = []
 GloveTimes = []
 GownTimes = []
 
-for _ in range(5)
+for _ in range(1):
     # VISOR DETECTOR
     #######################################################################################################
 

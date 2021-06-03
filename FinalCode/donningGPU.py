@@ -1,7 +1,7 @@
 import qi
 import os
 import time
-import takePhotoTest as photo
+import takePhotoGPU as photo
 import movement2 as move
 import sys
 import argparse

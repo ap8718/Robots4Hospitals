@@ -185,28 +185,26 @@ def detect_gloves(img, showImg = False):
 
     result = ''
 
-    if (num_hands == 2 and num_filt_hands == 2):
-        result = 'Both gloves detected'
+#    if (num_hands == 2 and num_filt_hands == 2):
+#        result = 'Both gloves detected'
+#    else:
+#        result = 'The gloves are not correctly worn'
+
+    if (num_hands == 1 and num_filt_hands == 1) :
+        result = 'The gloves are not correctly worn'
+    if (num_hands == 1 and num_filt_hands == 0) :
+        result = 'The gloves are not correctly worn'
+    if (num_hands == 2 and num_filt_hands == 2) :
+        result = 'both gloves detected'
+    if (num_hands == 2 and num_filt_hands == 1) :
+        result = 'The gloves are not correctly worn'
+    if (num_hands == 2 and num_filt_hands == 0) :
+        result = 'The gloves are not correctly worn'
     else:
         result = 'The gloves are not correctly worn'
 
-#    if (num_hands == 1 and num_filt_hands == 1) :
-#        result = 'The gloves are not correctly worn'
-#    if (num_hands == 1 and num_filt_hands == 0) :
-#        result = 'The gloves are not correctly worn'
-#    if (num_hands == 2 and num_filt_hands == 2) :
-#        result = 'both gloves detected'
-#    if (num_hands == 2 and num_filt_hands == 1) :
-#        result = 'The gloves are not correctly worn'
-#    if (num_hands == 2 and num_filt_hands == 0) :
-#        result = 'The gloves are not correctly worn'
-    # else:
-    #     result = 'none'
-
-    print("\n" + result + "\n")
     f = open("Results/GloveText", 'w')
     f.write(result)
-
 
     return result
 
@@ -220,17 +218,14 @@ for i in range(0,1):
 #print(resultlist)
 #mode = max(set(resultlist), key=resultlist.count)
 
-#<<<<<<< HEAD
-#=======
 print("\n" + result + "\n")
 #f = open('Results/GloveText','w')
 #f.write(result)
-#>>>>>>> 46de0fe3ffff3c9a5db774bcc94230ba8eee57ec
 
 
 #### GOWN DETECTOR
 
-gownModel = torch.hub.load('ultralytics/yolov5', 'custom', path='gown_harsh.pt') 
+gownModel = torch.hub.load('ultralytics/yolov5', 'custom', path='gown_new.pt') 
 # Image
 
 # Inference

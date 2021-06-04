@@ -1,3 +1,7 @@
+from datetime import datetime
+
+t3 = datetime.now()
+
 import torch
 import tensorflow as tf
 from PIL import Image
@@ -17,7 +21,7 @@ from object_detection.protos import pipeline_pb2
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as viz_utils
 from object_detection.builders import model_builder
-from datetime import datetime
+
 
 WORKSPACE_PATH = 'Tensorflow/workspace'
 MODEL_PATH = WORKSPACE_PATH+'/models'
@@ -283,6 +287,8 @@ for _ in range(1):
     print("\nGown mode time : " + str(t2 - t1) + "\n")
     GownTimes.append(t2-t1)
 
+t4 = datetime.now()
+
 VisorTimes = np.array(VisorTimes)
 MaskTimes = np.array(MaskTimes)
 GloveTimes = np.array(GloveTimes)
@@ -297,3 +303,5 @@ print("Visor time: " + str(visorTime))
 print("Mask time: " + str(maskTime))
 print("Glove time: " + str(gloveTime))
 print("Gown time: " + str(gownTime))
+
+print("Total time: " + str(t4-t3))

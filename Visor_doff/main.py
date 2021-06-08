@@ -9,7 +9,7 @@ threshold, threshold_z = func.get_rej_threshold(INPUT_IMAGE_PATH='/content/Robot
 OUTPUT_IMAGE_PATH='/content/Robots4Hospitals/Visor_doff/example_output.jpg') 
 
 #define some parameters:
-#reject_ratio: range between 1 to infinity, the smaller the more 
+#reject_ratio: range from 1 to infinity, the smaller the more 
 #accurate in rejecting the 'hands in front of visor but not touching' cases.
 reject_ratio = 1.5
 

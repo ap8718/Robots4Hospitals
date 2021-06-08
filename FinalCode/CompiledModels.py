@@ -190,15 +190,20 @@ def detect_gloves(img, showImg = False):
 #    else:
 #        result = 'The gloves are not correctly worn'
 
+    print("\n num_hands = " + str(num_hands))
+    print("num_filt_hands = " + str(num_filt_hands) + "\n")
+
+    print(str(num_hands == 2 and num_filt_hands == 2) + "\n")
+
     if (num_hands == 1 and num_filt_hands == 1) :
         result = 'The gloves are not correctly worn'
-    if (num_hands == 1 and num_filt_hands == 0) :
+    elif (num_hands == 1 and num_filt_hands == 0) :
         result = 'The gloves are not correctly worn'
-    if (num_hands == 2 and num_filt_hands == 2) :
+    elif (num_hands == 2 and num_filt_hands == 2) :
         result = 'both gloves detected'
-    if (num_hands == 2 and num_filt_hands == 1) :
+    elif (num_hands == 2 and num_filt_hands == 1) :
         result = 'The gloves are not correctly worn'
-    if (num_hands == 2 and num_filt_hands == 0) :
+    elif (num_hands == 2 and num_filt_hands == 0) :
         result = 'The gloves are not correctly worn'
     else:
         result = 'The gloves are not correctly worn'

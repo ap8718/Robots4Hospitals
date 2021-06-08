@@ -37,8 +37,8 @@ def analyseGownDoffing(image, results):
 
         height = int(abs(cy12 - cy24))
 
-        right_dist_elbow = int(abs(cx19 - cx14) + abs(cy19 - cy14))             #Manhattan distance
-        left_dist_elbow = int(abs(cx20 - cx13) + abs(cy20 - cy13))
+        right_dist_elbow = int(abs(cx15 - cx14) + abs(cy15 - cy14))             #Manhattan distance
+        left_dist_elbow = int(abs(cx16 - cx13) + abs(cy16 - cy13))
 
         right_dist_elbow /= height
         left_dist_elbow /= height
@@ -47,7 +47,7 @@ def analyseGownDoffing(image, results):
         right_dist_shoulder = int(abs(cy12 - cy24))          #Manhattan distance
         left_dist_shoulder = int(abs(cy11 - cy23))           #Manhattan distance
 
-        scale = 1.07
+        scale = 1.07    # Hip to tip of shoulder / hip to middle of shoulder
 
         right_dist_shoulder *= scale
         left_dist_shoulder *= scale
@@ -80,11 +80,11 @@ def analyseGownDoffing(image, results):
         RhandAboveNeck = (cy_neck > RHands[:,1])
 
         if LhandWithinShoulders.any() or RhandWithinShoulders.any():
-            handColour = (0,127,255)
+            # handColour = (0,127,255)
             if sum(LhandAboveNeck) >= 3 or sum(RhandAboveNeck) >= 3:    # 2 or more points
                 danger = True
 
-        if(right_dist_elbow < 0.3 or left_dist_elbow < 0.3):
+        if(right_dist_elbow < 0.37 or left_dist_elbow < 0.37):
             danger = True
 
         if danger:

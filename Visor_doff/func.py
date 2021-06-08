@@ -41,7 +41,8 @@ def visor_doff(threshold, threshold_z, reject_ratio, lamda, INPUT_MP4_PATH='', O
   mp_drawing = mp.solutions.drawing_utils
   model = torch.hub.load('ultralytics/yolov5', 'custom', path=MODEL_PATH)
 
-  cap = cv.VideoCapture(INPUT_MP4_PATH) #put video directory here
+  # cap = cv.VideoCapture(INPUT_MP4_PATH) #put video directory here
+  cap = cv.VideoCapture(0)
   fourcc = cv.VideoWriter_fourcc(*'MP4V')
   fps = cap.get(cv.CAP_PROP_FPS)
   fcount  = cap.get(cv.CAP_PROP_FRAME_COUNT)
@@ -152,6 +153,8 @@ def visor_doff(threshold, threshold_z, reject_ratio, lamda, INPUT_MP4_PATH='', O
       cv.putText(results2.imgs[0], max_text1, (10,100), cv.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 1, cv.LINE_AA)
       cv.putText(results2.imgs[0], max_text2, (10,130), cv.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 1, cv.LINE_AA)
       out.write(results2.imgs[0])
+
+      cv2.imshow("Output", results2.imgs[0])
 
       #debug stuff
       #if (cnt > 10):

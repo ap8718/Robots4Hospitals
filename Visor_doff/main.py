@@ -1,17 +1,28 @@
+import cv2 as cv
+import numpy as np
+import mediapipe as mp
+import torch
 import func
 
-mp_drawing = mp.solutions.drawing_utils
-mp_hands = mp.solutions.hands
-hands = mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_confidence=0.8)
-mp_drawing = mp.solutions.drawing_utils
-
-model = torch.hub.load('ultralytics/yolov5', 'custom', path='visor_track+.pt')
-
-#take a static image with hands very close to visor but no contact
-threshold, threshold_z = get_rej_threshold(INPUT_IMAGE_PATH, OUTPUT_IMAGE_PATH)
+#take a static image with hands very close to visor but without contact
+threshold, threshold_z = func.get_rej_threshold(INPUT_IMAGE_PATH='/content/Robots4Hospitals/Visor_doff/example.jpg', 
+OUTPUT_IMAGE_PATH='/content/Robots4Hospitals/Visor_doff/example_output.jpg') 
 
 #define some parameters:
-
+#reject_ratio: range between 1 to infinity, the smaller the more 
+#accurate in rejecting the 'hands in front of visor but not touching' cases.
 reject_ratio = 1.5
-lamda = 10
-p1, p2, p3 = visor_doff(INPUT_MP4_PATH, OUTPUT_MP4_PATH, threshold, threshold_z, reject_ratio, lamda)
+
+#lamda: a classifcation boundary. for example, in this case if
+#max(obj_score > 10) the result will be classfied as visor touched.
+lamda = 10 
+
+p1, p2, p3 = func.visor_doff(threshold, threshold_z, reject_ratio, lamda,
+INPUT_MP4_PATH='/content/Robots4Hospitals/Visor_doff/example.mp4',
+OUTPUT_MP4_PATH='/content/Robots4Hospitals/Visor_doff/example_output.mp4',
+MODEL_PATH='/content/Robots4Hospitals/Visor_doff/visor_track+.pt')
+
+print("Maximum obj score achieved: {0}".format(p1))
+print("Number of continuous frames with obj score > lamda: {0}".format(p2)) 
+print("Number of overall frames with obj score > lamda : {0}".format(p3)) 
+

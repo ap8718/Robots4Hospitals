@@ -4,38 +4,43 @@ import mediapipe as mp
 import torch
 
 def inbox_cnt(xmin, ymin, xmax, ymax, x, y):
-    if (xmin < x < xmax) and (ymin < y < ymax):
-        return True
-    else:
-        return False
+  if (xmin < x < xmax) and (ymin < y < ymax):
+    return True
+  else:
+    return False
 
 # threshold from static images:
-def get_rej_threshold(INPUT_IMAGE_PATH, OUTPUT_IMAGE_PATH):
-    max_area = max_z = 0
-    mp_hands = mp.solutions.hands
-    mp_drawing = mp.solutions.drawing_utils
+def get_rej_threshold(INPUT_IMAGE_PATH='', OUTPUT_IMAGE_PATH=''):
+  max_area = max_z = 0
+  mp_hands = mp.solutions.hands
+  mp_drawing = mp.solutions.drawing_utils
 
-    with mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_confidence=0.8) as static_hands:
+  with mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_confidence=0.8) as static_hands:
     image = cv.flip(cv.imread(INPUT_IMAGE_PATH), 1)
     results = static_hands.process(cv.cvtColor(image, cv.COLOR_BGR2RGB))
     image_height, image_width, _ = image.shape
     annotated_image = image.copy()
     for hand_landmarks in results.multi_hand_landmarks:
-        x_min = y_min = 1e6
-        x_max = y_max = 0
-        for n in range (21):
-            x, y, z = hand_landmarks.landmark[n].x, hand_landmarks.landmark[n].y, hand_landmarks.landmark[n].z
-            x_t, y_t = x * image_width, y * image_height
-            x_min, y_min, x_max, y_max = min(x, x_min), min(y, y_min), max(x, x_max), max(y, y_max)
-            max_z = max(max_z, abs(z))
-        area = (y_max - y_min) * (x_max - x_min)
-        max_area = max(area, max_area)
-        mp_drawing.draw_landmarks(annotated_image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
-    cv.imwrite(OUTPUT_IMAGE_PATH + '.png', cv.flip(annotated_image, 1))
+      x_min = y_min = 1e6
+      x_max = y_max = 0
+      for n in range (21):
+          x, y, z = hand_landmarks.landmark[n].x, hand_landmarks.landmark[n].y, hand_landmarks.landmark[n].z
+          x_t, y_t = x * image_width, y * image_height
+          x_min, y_min, x_max, y_max = min(x, x_min), min(y, y_min), max(x, x_max), max(y, y_max)
+          max_z = max(max_z, abs(z))
+      area = (y_max - y_min) * (x_max - x_min)
+      max_area = max(area, max_area)
+      mp_drawing.draw_landmarks(annotated_image, hand_landmarks, mp_hands.HAND_CONNECTIONS)
+    cv.imwrite(OUTPUT_IMAGE_PATH, cv.flip(annotated_image, 1))
     return max_area, max_z
 
 #video analysis:
-def visor_doff(INPUT_MP4_PATH, OUTPUT_MP4_PATH, threshold, threshold_z, reject_ratio, lamda):
+def visor_doff(threshold, threshold_z, reject_ratio, lamda, INPUT_MP4_PATH='', OUTPUT_MP4_PATH='',MODEL_PATH=''):
+  mp_hands = mp.solutions.hands
+  hands = mp_hands.Hands(static_image_mode=True, max_num_hands=2, min_detection_confidence=0.8)
+  mp_drawing = mp.solutions.drawing_utils
+  model = torch.hub.load('ultralytics/yolov5', 'custom', path=MODEL_PATH)
+
   cap = cv.VideoCapture(INPUT_MP4_PATH) #put video directory here
   fourcc = cv.VideoWriter_fourcc(*'MP4V')
   fps = cap.get(cv.CAP_PROP_FPS)

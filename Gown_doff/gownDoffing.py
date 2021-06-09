@@ -214,10 +214,16 @@ def main():
                 dangerList.append(1)
             if len(dangerList) == 5:
                 sendDangerSignal = True
-                dangerList = []
+                # dangerList = []
+
+            f = open("GownDoffingText", "w")
+
             if sendDangerSignal:
-                print("")
-            image_list.append(image)
+                print("***CONTAMINATION DETECTED***")
+                f.write("Contaminated")
+            if sendDangerSignal:
+                f.write("Safe")
+
             out.write(image)
 
             #if danger:

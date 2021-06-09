@@ -42,7 +42,7 @@ bas.pauseAwareness()
 motion_service.setStiffnesses("Head", 1.0)
 names      = "Head"
 
-angleLists = [0*almath.TO_RAD,3*almath.TO_RAD]
+angleLists = [0*almath.TO_RAD,-7*almath.TO_RAD]
 
 motion_service.angleInterpolationWithSpeed(names, angleLists, 0.6)
 
@@ -59,10 +59,17 @@ print "Video was saved on the robot: ", videoInfo[1]
 print "Total number of frames: ", videoInfo[0]
 
 os.system("scp nao@10.0.0.83:~/recordings/cameras/test.avi ./recordings")
+os.system("scp -P 19563 recordings/test.avi root@2.tcp.ngrok.io:/root/Robots4Hospitals/Gown_doff")
 
-os.chdir("recordings")
+time.sleep(20)
 
-os.system("python3 videoToFrames.py")
+os.system("scp -P 19563 root@2.tcp.ngrok.io:/root/Robots4Hospitals/Gown_doff/GownDoffingText .")
+f = open('GownDoffingText', 'r')
+tts.say(f.read())
+
+# os.chdir("recordings")
+
+# os.system("python3 videoToFrames.py")
 
 # vidcap = cv2.VideoCapture('recordings/test.avi')
 

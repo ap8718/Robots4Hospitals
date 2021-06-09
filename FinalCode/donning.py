@@ -90,11 +90,12 @@ class HumanGreeter(object):
                 self.awareness.pauseAwareness()
                 print(self.awareness.isAwarenessPaused())
                 self.tts.say('Commencing doffing')
-                
+
+                self.tts.say('Please use the next 10 seconds to doff your gown. Make sure you do not touch the inside of the gown or touch any bare skin with your gloves')
 
                 
-                t2 = datetime.now()
-                    
+
+              
 
             
 

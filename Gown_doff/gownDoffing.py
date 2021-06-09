@@ -212,8 +212,9 @@ def main():
             if danger:
                 print("DANGER")
                 dangerList.append(1)
-            if len(dangerList == 4):
+            if len(dangerList == 5):
                 sendDangerSignal = True
+                dangerList = []
             if sendDangerSignal:
                 print("")
             image_list.append(image)

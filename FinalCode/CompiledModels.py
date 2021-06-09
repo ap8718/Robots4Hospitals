@@ -216,7 +216,7 @@ def detect_gloves(img, showImg = False):
 resultlist = []
 for i in range(0,1):
     img =cv2.imread(r"imagesFromPepper/analysis" + str(i) + ".png")
-    height, width, channels = img.shape     
+    height, width, channels = img.shape
     result = detect_gloves(img, showImg = True)
 #    resultlist.append(result)
 
@@ -230,7 +230,7 @@ print("\n" + result + "\n")
 
 #### GOWN DETECTOR
 
-gownModel = torch.hub.load('ultralytics/yolov5', 'custom', path='gown_new.pt') 
+gownModel = torch.hub.load('ultralytics/yolov5', 'custom', path='gown_new.pt')
 # Image
 
 # Inference

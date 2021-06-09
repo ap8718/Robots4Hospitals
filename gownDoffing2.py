@@ -1,31 +1,15 @@
 import cv2
 import mediapipe as mp
 import numpy as np
-import torch
-from PIL import Image
-
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
 # mp_holistic = mp.solutions.holistic
 
-def inference(box_list):
-  gown = incomplete_gown = False
-  incomplete_gown_list = []
-  for item in box_list:
-    if item[5] == 0:
-      gown = True
-    elif item[5] == 1:
-      incomplete_gown = True
-      xmin, ymin, xmax, ymax = item[:4]
-      l = []
-      l.extend((xmin, ymin, xmax, ymax))
-      incomplete_gown_list.append(l)
-  return gown, incomplete_gown, incomplete_gown_list
-
-def analyseGownDoffing(image, results, incomplete_gown, incomplete_gown_list):
+def analyseGownDoffing(image, results):
     h, w, c = image.shape
+
     danger = False
-    danger_text = ''
+
     points = np.array([])
     if(results.pose_landmarks):
         points = np.array([(data_point.x, data_point.y, data_point.z) for data_point in results.pose_landmarks.landmark])
@@ -52,6 +36,8 @@ def analyseGownDoffing(image, results, incomplete_gown, incomplete_gown_list):
         cx24, cy24 = int(w*points[24][0]), int(h*points[24][1])     #Right hip
 
         height = int(abs(cy12 - cy24))
+
+        # print(height)
 
         right_dist_elbow = int(abs(cx15 - cx14) + abs(cy15 - cy14))             #Manhattan distance
         left_dist_elbow = int(abs(cx16 - cx13) + abs(cy16 - cy13))
@@ -104,28 +90,11 @@ def analyseGownDoffing(image, results, incomplete_gown, incomplete_gown_list):
 
         if LhandWithinShoulders.any() or RhandWithinShoulders.any():
             # handColour = (0,127,255)
-            if sum(LhandAboveNeck) >= 3 or sum(RhandAboveNeck) >= 3:    # 2 or more points
+            if sum(LhandAboveNeck) >= 3 or sum(RhandAboveNeck) >= 3:    # 3 or more points
                 danger = True
-                danger_text = 'Neck Touch Danger'
 
-        # if(right_dist_elbow < 0.37 or left_dist_elbow < 0.37):
-        #     danger = True
-        #     danger_text = 'Arm Touch Danger'
-
-        if incomplete_gown:
-          for l in incomplete_gown_list:
-            xmin, ymin, xmax, ymax = l
-            xmin, ymin, xmax, ymax = int(xmin), int(ymin), int(xmax), int(ymax)
-            cv2.rectangle(image, (xmin, ymax), (xmax, ymin), (255,255,255),3)
-            X_LhandWithinBoxes = np.logical_and(xmin < LHands[:,0],  LHands[:,0] < xmax)
-            Y_LhandWithinBoxes = np.logical_and(ymin < LHands[:,1],  LHands[:,1] < ymax)
-
-            X_RhandWithinBoxes = np.logical_and(xmin < RHands[:,0],  RHands[:,0] < xmax)
-            Y_RhandWithinBoxes = np.logical_and(ymin < RHands[:,1],  RHands[:,1] < ymax)
-
-            if not (X_LhandWithinBoxes.all() and Y_LhandWithinBoxes.all() and X_RhandWithinBoxes.all() and Y_RhandWithinBoxes.all()) and handOnTorso:
-              danger = True
-              danger_text = 'Hands Misposition Danger' #this condition is quite harsh, we will see..
+        if(right_dist_elbow < 0.37 or left_dist_elbow < 0.37):
+            danger = True
 
         if danger:
             handColour = (0,0,255)
@@ -137,6 +106,7 @@ def analyseGownDoffing(image, results, incomplete_gown, incomplete_gown_list):
         cv2.circle(image, (cx21, cy21), 5, handColour, cv2.FILLED)
 
         # cv2.line(image, (cx19, cy19), (cx7, cy7), (0, right_dist_shoulder, 255-right_dist_shoulder), 3)
+
         cv2.circle(image, (cx16, cy16), 5, handColour, cv2.FILLED)
         cv2.circle(image, (cx18, cy18), 5, handColour, cv2.FILLED)
         cv2.circle(image, (cx20, cy20), 5, handColour, cv2.FILLED)
@@ -145,6 +115,8 @@ def analyseGownDoffing(image, results, incomplete_gown, incomplete_gown_list):
         cv2.circle(image, (cx12, cy12_new), 5, (0, 0, 255), cv2.FILLED)
         cv2.circle(image, (cx11, cy11_new), 5, (0, 0, 255), cv2.FILLED)
         cv2.circle(image, (cx_neck, cy_neck), 5, (0, 0, 255), cv2.FILLED)
+        cv2.circle(image, (cx12, cy24), 5, (0, 0, 255), cv2.FILLED)
+        cv2.circle(image, (cx11, cy23), 5, (0, 0, 255), cv2.FILLED)
 
         cv2.line(image, (cx11, cy11_new), (cx12, cy12_new), (0, 255, 0), 1)
         cv2.line(image, (cx11, cy11_new), (cx11, cy23), (0, 255, 0), 1)
@@ -152,83 +124,40 @@ def analyseGownDoffing(image, results, incomplete_gown, incomplete_gown_list):
         cv2.line(image, (cx12, cy24), (cx11, cy23), (0, 255, 0), 1)
 
         if danger:
-            cv2.putText(image, danger_text, (10,30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 1, cv2.LINE_AA)
+            # print("DANGER")
+            cv2.putText(image, "DANGER", (100,100), cv2.FONT_HERSHEY_SIMPLEX, 3, (0,0,255), 3, cv2.LINE_AA)
 
-    return danger, image
+    return danger
 
-INPUT_MP4_PATH = 'test.avi'
-OUTPUT_MP4_PATH = 'output.mp4'
-
-def main():
-
-    MODEL_PATH = 'gown_harsh.pt'
-    cap = cv2.VideoCapture(INPUT_MP4_PATH)
-    fourcc = cv2.VideoWriter_fourcc(*'MP4V')
-    fps = cap.get(cv2.CAP_PROP_FPS)
-    fcount  = cap.get(cv2.CAP_PROP_FRAME_COUNT)
-    videoWidth = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-    videoHeight = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-    out = cv2.VideoWriter(OUTPUT_MP4_PATH, fourcc, fps, (videoWidth,videoHeight))
-    print("\nLoading gown model...\n")
-    model = torch.hub.load('ultralytics/yolov5', 'custom', path=MODEL_PATH, force_reload=True)
-    image_list = []
-    dangerList = []
-    sendDangerSignal = False
-
-        # Initiate holistic model
+if __name__ == "__main__":
+    cap = cv2.VideoCapture(0)
+    # Initiate holistic model
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
 
         while cap.isOpened():
             ret, frame = cap.read()
+
             # Recolor Feed
-            if not ret:
-              print("EOF. Exited")
-              break
             image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+
             # image = cv2.resize(image, dsize=(480, 320), interpolation = cv2.INTER_CUBIC)
-
-            res = model(image, size=640)
-            box_list = res.xyxy[0].tolist()
-            gown, incomplete_gown, incomplete_gown_list = inference(box_list)
-            if (not gown) and (not incomplete_gown):
-              cv2.putText(image, "No Gown Detected", (10,30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 1, cv2.LINE_AA)
-              image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-              out.write(image)
-              continue
-
-            # Make Pose Detections
+            # Make Detections
             results = pose.process(image)
-            if not results.pose_landmarks:
-              cv2.putText(image, "No Pose Detected", (10,30), cv2.FONT_HERSHEY_SIMPLEX, 1, (0,0,255), 1, cv2.LINE_AA)
-              image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
-              out.write(image)
-              continue
 
             # Recolor image back to BGR for rendering
-            image_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+
             # Pose Detections
             # mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
-            danger, image = analyseGownDoffing(image_bgr, results, incomplete_gown, incomplete_gown_list)
+
+            danger = analyseGownDoffing(image, results)
             if danger:
                 print("DANGER")
-                dangerList.append(1)
-            if len(dangerList) == 5:
-                sendDangerSignal = True
-                dangerList = []
-            if sendDangerSignal:
-                print("")
-            image_list.append(image)
-            out.write(image)
 
-            #if danger:
-            #  print("DANGER")
-            # cv2.imshow('Raw Webcam Feed', image)
+            cv2.imshow('Raw Webcam Feed', image)
 
-            # if cv2.waitKey(10) & 0xFF == ord('q'):
-            #     break
+            if cv2.waitKey(10) & 0xFF == ord('q'):
+                break
 
     cap.release()
-    # cv2.destroyAllWindows()
-
-if __name__ == "__main__":
-    main()
+    cv2.destroyAllWindows()

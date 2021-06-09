@@ -220,9 +220,9 @@ def main():
 
             if sendDangerSignal:
                 print("***CONTAMINATION DETECTED***")
-                f.write("Contaminated")
-            if sendDangerSignal:
-                f.write("Safe")
+                f.write("Contamination detected!")
+            else:
+                f.write("Gown safely doffed")
 
             out.write(image)
 

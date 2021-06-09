@@ -222,13 +222,13 @@ def main():
 
             #if danger:
             #  print("DANGER")
-            cv2.imshow('Raw Webcam Feed', image)
+            # cv2.imshow('Raw Webcam Feed', image)
 
-            if cv2.waitKey(10) & 0xFF == ord('q'):
-                break
+            # if cv2.waitKey(10) & 0xFF == ord('q'):
+            #     break
 
     cap.release()
-    cv2.destroyAllWindows()
+    # cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     main()

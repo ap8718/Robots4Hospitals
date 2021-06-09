@@ -2,7 +2,7 @@ import qi
 import os
 import time
 import takePhotoGPU as photo
-import movement2 as move
+import movement as move
 import sys
 import argparse
 from datetime import datetime

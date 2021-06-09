@@ -34,7 +34,7 @@ class HumanGreeter(object):
         
         self.face_detection.pause(True)
        
-        self.face_detection.setVocabulary(["please scan me"],False)
+        self.face_detection.setVocabulary(["please scan me", 'start the doffing procedure please'],False)
         
         self.face_detection.pause(False)
         self.face_detection.subscribe("HumanGreeter")
@@ -51,7 +51,7 @@ class HumanGreeter(object):
             self.got_face = True
             print value
             
-            if 'please scan me' in value[0] and value[1] > 0.4:
+            if 'please scan me' in value[0] and value[1] > 0.35:
                 self.awareness.pauseAwareness()
                 print(self.awareness.isAwarenessPaused())
                 self.tts.say('Commencing scan')
@@ -86,7 +86,14 @@ class HumanGreeter(object):
 
                 self.awareness.resumeAwareness()
 
+        elif 'start the doffing procedure please' in value[0] and value[1] > 0.35:
+                self.awareness.pauseAwareness()
+                print(self.awareness.isAwarenessPaused())
+                self.tts.say('Commencing doffing')
                 
+
+                
+                t2 = datetime.now()
                     
 
             

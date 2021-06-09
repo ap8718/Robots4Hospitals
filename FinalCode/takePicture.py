@@ -36,13 +36,13 @@ def main(session):
     tts = ALProxy("ALTextToSpeech", "10.0.0.83", 9559)
     tts.say('Please stay still, I am going to take a picture of you')
 
-    # bap = ALProxy('ALBasicAwareness', '10.0.0.83', 9559)
+    bap = ALProxy('ALBasicAwareness', '10.0.0.83', 9559)
     
     motion_service  = session.service("ALMotion")
 
     print 'getting images in remote'
     for i in range(0, 1):
-        # bap.pauseAwareness()
+        bap.pauseAwareness()
         print "getting image " + str(i)
         motion_service.setStiffnesses("Head", 1.0)
         names      = "Head"
@@ -85,6 +85,7 @@ def main(session):
     #result.save(r"imagesFromPepper/camImage.png", "PNG")
       
     tts.say('Picture taken')
+    bap.resumeAwareness()
     tablet.main(session)
     video_service.unsubscribe(nameId)
   

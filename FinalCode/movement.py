@@ -16,8 +16,8 @@ def main(session):
 
     # print("Awareness paused: " + str(bas.isAwarenessPaused()))
 
-    ms.setStiffnesses("LArm", 1.0)
-    ms.setStiffnesses("RArm", 1.0)
+    # ms.setStiffnesses("LArm", 1.0)
+    # ms.setStiffnesses("RArm", 1.0)
 
     names = [
         "RElbowRoll",
@@ -29,6 +29,8 @@ def main(session):
         "LShoulderRoll",
         "LShoulderPitch",
     ]
+
+    ms.setStiffnesses(names, 1.0)
 
     angles = [
         90.0,
@@ -42,7 +44,7 @@ def main(session):
     ]
 
     angles = [i*almath.TO_RAD for i in angles]
-    times = [3.0] * len(names)
+    times = [2.0] * len(names)
     isAbsolute = True
 
     print("Putting arms up...")

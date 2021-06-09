@@ -41,7 +41,7 @@ category_index = label_map_util.create_category_index_from_labelmap(ANNOTATION_P
 cap = cv2.VideoCapture(0)
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-filter_value = 70
+filter_value = 10
 num_frames = 30
 wrong = False
 
@@ -52,8 +52,8 @@ while True:
     frame1 = frame
     hsv = cv2.cvtColor(frame1, cv2.COLOR_BGR2HSV)
 
-    lower_blue = np.array([100,filter_value,filter_value])
-    upper_blue = np.array([130,255,255])
+    lower_blue = np.array([110,filter_value,filter_value])
+    upper_blue = np.array([150,255,255])
 
     # Threshold the HSV image to get only blue colors
     mask = cv2.inRange(hsv, lower_blue, upper_blue)

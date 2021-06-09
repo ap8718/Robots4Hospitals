@@ -7,7 +7,7 @@ MODEL_PATH = WORKSPACE_PATH+'/models'
 PRETRAINED_MODEL_PATH = WORKSPACE_PATH+'/pre-trained-models'
 CONFIG_PATH = MODEL_PATH+'/my_ssd_mobnet/pipeline.config'
 CHECKPOINT_PATH = MODEL_PATH+'/my_ssd_mobnet/'
-CUSTOM_MODEL_NAME = 'my_ssd_mobnet' 
+CUSTOM_MODEL_NAME = 'my_ssd_mobnet'
 
 import tensorflow as tf
 from object_detection.utils import config_util
@@ -17,7 +17,7 @@ import os
 from object_detection.utils import label_map_util
 from object_detection.utils import visualization_utils as viz_utils
 from object_detection.builders import model_builder
-import cv2 
+import cv2
 import numpy as np
 
 
@@ -28,7 +28,7 @@ detection_model = model_builder.build(model_config=configs['model'], is_training
 
 # Restore checkpoint
 ckpt = tf.compat.v2.train.Checkpoint(model=detection_model)
-ckpt.restore(os.path.join(CHECKPOINT_PATH, 'ckpt-21')).expect_partial()
+ckpt.restore(os.path.join(CHECKPOINT_PATH, 'ckpt-10')).expect_partial()
 
 @tf.function
 def detect_fn(image):
@@ -45,9 +45,9 @@ filter_value = 10
 num_frames = 30
 wrong = False
 
-while True: 
+while True:
     ret, frame = cap.read()
-    
+
     f2 = frame
     frame1 = frame
     hsv = cv2.cvtColor(frame1, cv2.COLOR_BGR2HSV)
@@ -59,47 +59,47 @@ while True:
     mask = cv2.inRange(hsv, lower_blue, upper_blue)
     res = cv2.bitwise_and(frame1,frame1, mask= mask)
     frame = cv2.cvtColor(res, cv2.COLOR_HSV2BGR)
-    
+
     image_np = np.array(frame)
-    
+
     input_tensor = tf.convert_to_tensor(np.expand_dims(image_np, 0), dtype=tf.float32)
     detections = detect_fn(input_tensor)
-    
+
     num_detections = int(detections.pop('num_detections'))
     detections = {key: value[0, :num_detections].numpy()
                   for key, value in detections.items()}
     detections['num_detections'] = num_detections
-    
-    
-    
+
+
+
     scores = detections['detection_scores']
     classes = detections['detection_classes']
     #print(detections)
     s = scores[0]
     c = classes[0]
-    
+
     #print(s, c)
-    
-    if s > 0.7 and c == 0 : 
+
+    if s > 0.7 and c == 0 :
         num_frames -= 1
     else :
         num_frames += 1
-        
+
     num_frames = min(num_frames, 30)
     num_frames = max(num_frames, 0)
-    
+
     if num_frames <= 10 :
         wrong = True
 
-      
+
     font = cv2.FONT_HERSHEY_SIMPLEX
     org = (10, 50)
-    
+
     if wrong :
         cv2.putText(f2, 'Wrong', org, font, 2, (0, 0, 255), 2, cv2.LINE_AA)
     else :
         cv2.putText(f2, 'Ok', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-        
+
     cv2.imshow('frame', f2)
     # detection_classes should be ints.
     detections['detection_classes'] = detections['detection_classes'].astype(np.int64)
@@ -119,7 +119,7 @@ while True:
                 agnostic_mode=False)
 
     cv2.imshow('object detection',  cv2.resize(image_np_with_detections, (800, 600)))
-    
+
     if cv2.waitKey(1) & 0xFF == ord('q'):
         cap.release()
         break

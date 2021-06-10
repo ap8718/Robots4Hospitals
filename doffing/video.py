@@ -47,7 +47,7 @@ angleLists = [0*almath.TO_RAD,-7*almath.TO_RAD]
 motion_service.angleInterpolationWithSpeed(names, angleLists, 0.6)
 
 
-videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "test")
+videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "example")
 print "Video record started."
 
 time.sleep(10) # Duration of video 
@@ -58,14 +58,15 @@ bas.resumeAwareness()
 print "Video was saved on the robot: ", videoInfo[1]
 print "Total number of frames: ", videoInfo[0]
 
-os.system("scp nao@10.0.0.83:~/recordings/cameras/test.avi ./recordings")
-os.system("scp -P 19563 recordings/test.avi root@2.tcp.ngrok.io:/root/Robots4Hospitals/Gown_doff")
+os.system("scp nao@10.0.0.83:~/recordings/cameras/example.avi ./recordings")
+# os.system("scp -P 19563 recordings/test.avi root@2.tcp.ngrok.io:/root/Robots4Hospitals/Gown_doff")
+os.system("scp -P 19563 recordings/example.avi root@2.tcp.ngrok.io:/root/Robots4Hospitals/Visor_doff")
 
-time.sleep(20)
+# time.sleep(20)
 
-os.system("scp -P 19563 root@2.tcp.ngrok.io:/root/Robots4Hospitals/Gown_doff/GownDoffingText .")
-f = open('GownDoffingText', 'r')
-tts.say(f.read())
+# os.system("scp -P 19563 root@2.tcp.ngrok.io:/root/Robots4Hospitals/Gown_doff/GownDoffingText .")
+# f = open('GownDoffingText', 'r')
+# tts.say(f.read())
 
 # os.chdir("recordings")
 

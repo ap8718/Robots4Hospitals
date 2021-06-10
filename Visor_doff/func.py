@@ -154,7 +154,7 @@ def visor_doff(threshold, threshold_z, reject_ratio, lamda, INPUT_MP4_PATH='', O
       cv.putText(results2.imgs[0], max_text2, (10,130), cv.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 1, cv.LINE_AA)
       out.write(results2.imgs[0])
 
-      cv2.imshow("Output", results2.imgs[0])
+      cv.imshow("Output", results2.imgs[0])
 
       #debug stuff
       #if (cnt > 10):

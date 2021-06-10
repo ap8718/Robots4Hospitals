@@ -69,7 +69,7 @@ def main(session):
  
 
         # Save the image.
-        img.save(r"imagesFromPepper/analysis" + str(i) + ".png", "PNG")
+        img.save(r"imagesFromPepper/analysis1.png", "PNG")
 
         
 

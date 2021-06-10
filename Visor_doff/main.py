@@ -5,13 +5,8 @@ import torch
 import func
 
 #take a static image with hands very close to visor but without contact
-<<<<<<< HEAD
-threshold, threshold_z = func.get_rej_threshold(INPUT_IMAGE_PATH='example.jpg', 
+threshold, threshold_z = func.get_rej_threshold(INPUT_IMAGE_PATH='example.png', 
 OUTPUT_IMAGE_PATH='example_output.jpg') 
-=======
-threshold, threshold_z = func.get_rej_threshold(INPUT_IMAGE_PATH='example.jpg',
-OUTPUT_IMAGE_PATH='example_output.jpg')
->>>>>>> a4bb4412bc8024d9ddf71e1140d279babe6d3ab4
 
 #define some parameters:
 #reject_ratio: range from 1 to infinity, the smaller the more

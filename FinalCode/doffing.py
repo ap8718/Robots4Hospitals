@@ -84,7 +84,7 @@ def main(session):
     os.system("scp nao@10.0.0.83:~/recordings/cameras/visor.avi ./imagesFromPepper")
     os.system("scp -P  " + GPU_PORT + " imagesFromPepper/visor.avi  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Visor_doff")
     time.sleep(20)
-    os.system("scp -P  " + GPU_PORT + "  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Visors_doff/VisorDoffingText .")
+    os.system("scp -P  " + GPU_PORT + "  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Visor_doff/VisorDoffingText .")
     f = open('VisorDoffingText', 'r')
     tts.say(f.read())
     time.sleep(1)
@@ -94,7 +94,7 @@ def main(session):
     time.sleep(2)
 
     videoRecorderProxy.setFrameRate(15.0)
-    videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "example")
+    videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "gloves")
     print "Video record started."
     time.sleep(5) # Duration of video 
     videoInfo = videoRecorderProxy.stopRecording()
@@ -103,9 +103,9 @@ def main(session):
     print "Total number of frames: ", videoInfo[0]
     #Sending video to GPU server
     os.system("scp nao@10.0.0.83:~/recordings/cameras/gloves.avi ./imagesFromPepper")
-    os.system("scp -P  " + GPU_PORT + " imagesFromPepper/gloves.avi  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Visor_doff")
+    os.system("scp -P  " + GPU_PORT + " imagesFromPepper/gloves.avi  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Glove_doff")
     time.sleep(20)
-    os.system("scp -P  " + GPU_PORT + "  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Visors_doff/VisorDoffingText .")
+    os.system("scp -P  " + GPU_PORT + "  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Glove_doff/GloveDoffingText .")
     f = open('VisorDoffingText', 'r')
     tts.say(f.read())
     time.sleep(1)

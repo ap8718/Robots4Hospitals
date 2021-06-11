@@ -14,21 +14,23 @@ from PIL import Image, ImageEnhance
 import tablet
 import os
 
-ROBOT_IP = "10.0.0.83"
-ROBOT_PORT = 9559
+GPU_IP = "root@4.tcp.ngrok.io"
+GPU_PORT = "19969"
 
-GPU_IP = "root@0.tcp.ngrok.io"
-GPU_PORT = "14532"
-    
 
 def main(session):
+
+    gownSafe = False
+    visorSafe = False
+    glovesSafe = False
+
     bap = ALProxy('ALBasicAwareness', '10.0.0.83', 9559)
     motion_service  = session.service("ALMotion")
 
     ms = session.service("ALMotion")
     tts = session.service("ALTextToSpeech")
     try:
-        videoRecorderProxy = ALProxy("ALVideoRecorder", ROBOT_IP, ROBOT_PORT)
+        videoRecorderProxy = ALProxy("ALVideoRecorder", '10.0.0.83', 9559)
     except Exception, e:
         print "Error when creating ALVideoRecorder proxy:"
         print str(e)
@@ -36,7 +38,7 @@ def main(session):
     
     tts.say('Commencing Doffing')
     # tts.say('You now have the next 12 seconds to doff your gown and outer gloves. Please make sure not to touch the inside of your gown or any bare skin with your gloves on')
-    
+    tts.say('You now have the next 12 seconds to doff your gown and outer gloves.')
 
     # Motion for recording video
     bap.pauseAwareness()
@@ -46,7 +48,7 @@ def main(session):
     motion_service.angleInterpolationWithSpeed(names, angleLists, 0.6)
     time.sleep(1)
 
-    #recording video
+    #GOWN DOFFING: Recording video
     videoRecorderProxy.setFrameRate(15.0)
     videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "gown")
     print "Video record started."
@@ -60,17 +62,19 @@ def main(session):
     os.system("scp -P  " + GPU_PORT + " imagesFromPepper/gown.avi " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Gown_doff")
     time.sleep(20)
     os.system("scp -P  " + GPU_PORT + " " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Gown_doff/GownDoffingText .")
-    f = open('GownDoffingText', 'r')
-    tts.say(f.read())
+    f = open('Gown_doff/GownDoffingText', 'r')
+    string = f.read()
+    tts.say(string)
+    if string != 'Contamination detected!':
+        gownSafe = True
     time.sleep(1)
-
-
 
     tts.say('Please now wash your inner gloves')
     time.sleep(5)
 
-
-    tts.say('You now have the next 5 seconds to doff your visor, make sure to not touch the front of the visor at any point')
+    # VISOR DOFFING: Recording video
+    # tts.say('You now have the next 5 seconds to doff your visor, make sure to not touch the front of the visor at any point')
+    tts.say('You now have the next 5 seconds to doff your visor.')
 
     videoRecorderProxy.setFrameRate(15.0)
     videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "visor")
@@ -85,18 +89,22 @@ def main(session):
     os.system("scp -P  " + GPU_PORT + " imagesFromPepper/visor.avi  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Visor_doff")
     time.sleep(20)
     os.system("scp -P  " + GPU_PORT + "  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Visor_doff/VisorDoffingText .")
-    f = open('VisorDoffingText', 'r')
-    tts.say(f.read())
+    f = open('Visor_doff/VisorDoffingText', 'r')
+    string = f.read()
+    tts.say(string)
+    if string != 'Contamination detected!':
+        visorSafe = True
     time.sleep(1)
 
-
-    tts.say('Please now remove your inner gloves')
-    time.sleep(2)
+    # GLOVE DOFFING: Recording video
+    # tts.say('Please now remove your inner gloves')
+    tts.say('You now have the next 10 seconds to doff your inner gloves')
+    # time.sleep(2)
 
     videoRecorderProxy.setFrameRate(15.0)
     videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "gloves")
     print "Video record started."
-    time.sleep(5) # Duration of video 
+    time.sleep(10) # Duration of video 
     videoInfo = videoRecorderProxy.stopRecording()
     tts.say("Video taken!")
     print "Video was saved on the robot: ", videoInfo[1]
@@ -106,13 +114,20 @@ def main(session):
     os.system("scp -P  " + GPU_PORT + " imagesFromPepper/gloves.avi  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Glove_doff")
     time.sleep(20)
     os.system("scp -P  " + GPU_PORT + "  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Glove_doff/GloveDoffingText .")
-    f = open('VisorDoffingText', 'r')
-    tts.say(f.read())
+    f = open('Glove_doff/GloveDoffingText', 'r')
+    string = f.read()
+    tts.say(string)
+    print(string)
+    if string != "Contamination detected!":
+        glovesSafe = True
     time.sleep(1)
 
+    # print((gownSafe, visorSafe, glovesSafe))
 
-
-    tts.say('You can now remove your mask, and leave the ward')
+    if gownSafe and visorSafe and glovesSafe:
+        tts.say('You can now leave the ward and remove your mask')
+    else:
+        tts.say('Please seek assisstance to decontaminate yourself if you believe you have been contaminated')
     bap.resumeAwareness()
     print("All done!")
 

@@ -14,9 +14,11 @@ from PIL import Image, ImageEnhance
 import tablet
 import os
 
-IP = "10.0.0.83"
-PORT = 9559
+ROBOT_IP = "10.0.0.83"
+ROBOT_PORT = 9559
 
+GPU_IP = "root@0.tcp.ngrok.io"
+GPU_PORT = "14532"
     
 
 def main(session):
@@ -26,17 +28,14 @@ def main(session):
     ms = session.service("ALMotion")
     tts = session.service("ALTextToSpeech")
     try:
-        videoRecorderProxy = ALProxy("ALVideoRecorder", IP, PORT)
+        videoRecorderProxy = ALProxy("ALVideoRecorder", ROBOT_IP, ROBOT_PORT)
     except Exception, e:
         print "Error when creating ALVideoRecorder proxy:"
         print str(e)
         exit(1)
-
-
-
     
     tts.say('Commencing Doffing')
-    tts.say('You now have the next 12 seconds to doff your gown and outer gloves. Please make sure not to touch the inside of your gown or any bare skin with your gloves on')
+    # tts.say('You now have the next 12 seconds to doff your gown and outer gloves. Please make sure not to touch the inside of your gown or any bare skin with your gloves on')
     
 
     # Motion for recording video
@@ -48,22 +47,22 @@ def main(session):
     time.sleep(1)
 
     #recording video
-    # videoRecorderProxy.setFrameRate(15.0)
-    # videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "test")
-    # print "Video record started."
-    # time.sleep(12) # Duration of video 
-    # videoInfo = videoRecorderProxy.stopRecording()
-    # tts.say("Video taken!")
-    # print "Video was saved on the robot: ", videoInfo[1]
-    # print "Total number of frames: ", videoInfo[0]
-    # #Sending video to GPU server
-    # os.system("scp nao@10.0.0.83:~/recordings/cameras/test.avi ./imagesFromPepper")
-    # os.system("scp -P 19563 imagesFromPepper/test.avi root@2.tcp.ngrok.io:/root/Robots4Hospitals/Gown_doff")
-    # time.sleep(20)
-    # os.system("scp -P 19563 root@2.tcp.ngrok.io:/root/Robots4Hospitals/Gown_doff/GownDoffingText .")
-    # f = open('GownDoffingText', 'r')
-    # tts.say(f.read())
-    # time.sleep(1)
+    videoRecorderProxy.setFrameRate(15.0)
+    videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "gown")
+    print "Video record started."
+    time.sleep(12) # Duration of video 
+    videoInfo = videoRecorderProxy.stopRecording()
+    tts.say("Video taken!")
+    print "Video was saved on the robot: ", videoInfo[1]
+    print "Total number of frames: ", videoInfo[0]
+    #Sending video to GPU server
+    os.system("scp nao@10.0.0.83:~/recordings/cameras/gown.avi ./imagesFromPepper")
+    os.system("scp -P  " + GPU_PORT + " imagesFromPepper/gown.avi " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Gown_doff")
+    time.sleep(20)
+    os.system("scp -P  " + GPU_PORT + " " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Gown_doff/GownDoffingText .")
+    f = open('GownDoffingText', 'r')
+    tts.say(f.read())
+    time.sleep(1)
 
 
 
@@ -74,6 +73,27 @@ def main(session):
     tts.say('You now have the next 5 seconds to doff your visor, make sure to not touch the front of the visor at any point')
 
     videoRecorderProxy.setFrameRate(15.0)
+    videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "visor")
+    print "Video record started."
+    time.sleep(5) # Duration of video 
+    videoInfo = videoRecorderProxy.stopRecording()
+    tts.say("Video taken!")
+    print "Video was saved on the robot: ", videoInfo[1]
+    print "Total number of frames: ", videoInfo[0]
+    #Sending video to GPU server
+    os.system("scp nao@10.0.0.83:~/recordings/cameras/visor.avi ./imagesFromPepper")
+    os.system("scp -P  " + GPU_PORT + " imagesFromPepper/visor.avi  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Visor_doff")
+    time.sleep(20)
+    os.system("scp -P  " + GPU_PORT + "  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Visors_doff/VisorDoffingText .")
+    f = open('VisorDoffingText', 'r')
+    tts.say(f.read())
+    time.sleep(1)
+
+
+    tts.say('Please now remove your inner gloves')
+    time.sleep(2)
+
+    videoRecorderProxy.setFrameRate(15.0)
     videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "example")
     print "Video record started."
     time.sleep(5) # Duration of video 
@@ -82,17 +102,16 @@ def main(session):
     print "Video was saved on the robot: ", videoInfo[1]
     print "Total number of frames: ", videoInfo[0]
     #Sending video to GPU server
-    os.system("scp nao@10.0.0.83:~/recordings/cameras/example.avi ./imagesFromPepper")
-    os.system("scp -P 15288 imagesFromPepper/example.avi root@0.tcp.ngrok.io:/root/Robots4Hospitals/Visor_doff")
+    os.system("scp nao@10.0.0.83:~/recordings/cameras/gloves.avi ./imagesFromPepper")
+    os.system("scp -P  " + GPU_PORT + " imagesFromPepper/gloves.avi  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Visor_doff")
     time.sleep(20)
-    os.system("scp -P 15288 root@0.tcp.ngrok.io:/root/Robots4Hospitals/Visor_doff/VisorDoffingText .")
+    os.system("scp -P  " + GPU_PORT + "  " + GPU_IP + ":/root/Robots4Hospitals/FinalCode/Visors_doff/VisorDoffingText .")
     f = open('VisorDoffingText', 'r')
     tts.say(f.read())
     time.sleep(1)
 
 
-    tts.say('Please now remove your inner gloves')
-    time.sleep(2)
+
     tts.say('You can now remove your mask, and leave the ward')
     bap.resumeAwareness()
     print("All done!")

@@ -8,8 +8,8 @@ import almath
 from PIL import Image, ImageEnhance
 import tablet
 
-IP = "root@0.tcp.ngrok.io"
-PORT = "12203"
+IP = "root@2.tcp.ngrok.io"
+PORT = "18972"
 
 
 def main(session):

@@ -36,27 +36,27 @@ while True:
 
         if donning_read and not (np.all(donning_img == donning_prev_img)):
             print("Donning recieved!")
-            os.system("python3 CompiledModels.py")
+#            os.system("python3 CompiledModels.py")
             donning_read = False
 
         elif gown_read and not (np.all(gown_img == gown_prev_img)):
             print("Gown recieved!")
             os.chdir("Gown_doff")
-            os.system("python3 gownDoffing.py")
+#            os.system("python3 gownDoffing.py")
             os.chdir("..")
             gown_read = False
 
         elif visor_read and not (np.all(visor_img == visor_prev_img)):
             print("Visor recieved!")
             os.chdir("Visor_doff")
-            os.system("python3 visorDoffing.py")
+#            os.system("python3 visorDoffing.py")
             os.chdir("..")
             visor_read = False
 
         elif gloves_read and not (np.all(gloves_img == gloves_prev_img)):
             print("Gloves recieved!")
             os.chdir("Glove_doff")
-            os.system("python3 gloveDoffing.py")
+#            os.system("python3 gloveDoffing.py")
             os.chdir("..")
             gloves_read = False
 
@@ -65,7 +65,7 @@ while True:
             gown_read = True
             visor_read = True
             gloves_read = True
-        
+
         donning_prev_img = donning_img
         gown_prev_img = gown_img
         visor_prev_img = visor_img
@@ -76,3 +76,5 @@ while True:
         break
     except:
         continue
+
+

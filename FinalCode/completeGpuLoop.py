@@ -38,33 +38,41 @@ while True:
             print("Donning recieved!")
 #            os.system("python3 CompiledModels.py")
             donning_read = False
+        else:
+            donning_read = True
 
-        elif gown_read and not (np.all(gown_img == gown_prev_img)):
+        if gown_read and not (np.all(gown_img == gown_prev_img)):
             print("Gown recieved!")
             os.chdir("Gown_doff")
 #            os.system("python3 gownDoffing.py")
             os.chdir("..")
             gown_read = False
+        else:
+            gown_read = True
 
-        elif visor_read and not (np.all(visor_img == visor_prev_img)):
+        if visor_read and not (np.all(visor_img == visor_prev_img)):
             print("Visor recieved!")
             os.chdir("Visor_doff")
 #            os.system("python3 visorDoffing.py")
             os.chdir("..")
             visor_read = False
+        else:
+            visor_read = True
 
-        elif gloves_read and not (np.all(gloves_img == gloves_prev_img)):
+        if gloves_read and not (np.all(gloves_img == gloves_prev_img)):
             print("Gloves recieved!")
             os.chdir("Glove_doff")
 #            os.system("python3 gloveDoffing.py")
             os.chdir("..")
             gloves_read = False
-
         else:
-            donning_read = True
-            gown_read = True
-            visor_read = True
             gloves_read = True
+
+#        else:
+#            donning_read = True
+#            gown_read = True
+#            visor_read = True
+#            gloves_read = True
 
         donning_prev_img = donning_img
         gown_prev_img = gown_img

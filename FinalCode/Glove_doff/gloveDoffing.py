@@ -43,7 +43,7 @@ width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 filter_value = 70
 
-num_frames = 20
+num_frames = 15
 wrong = False
 
 while True: 
@@ -85,13 +85,13 @@ while True:
     
     if s > 0.7 and c == 0 : 
         num_frames -= 1
-    else :
+    elif s > 0.7:
         num_frames += 1
         
-    num_frames = min(num_frames, 20)
+    num_frames = min(num_frames, 15)
     num_frames = max(num_frames, 0)
     
-    if num_frames <= 5 :
+    if num_frames <= 4 :
         wrong = True
 
       

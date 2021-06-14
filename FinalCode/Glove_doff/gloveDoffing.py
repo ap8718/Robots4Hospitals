@@ -28,7 +28,7 @@ detection_model = model_builder.build(model_config=configs['model'], is_training
 
 # Restore checkpoint
 ckpt = tf.compat.v2.train.Checkpoint(model=detection_model)
-ckpt.restore(os.path.join(CHECKPOINT_PATH, 'ckpt-10')).expect_partial()
+ckpt.restore(os.path.join(CHECKPOINT_PATH, 'ckpt-21')).expect_partial()
 
 @tf.function
 def detect_fn(image):
@@ -41,65 +41,68 @@ category_index = label_map_util.create_category_index_from_labelmap(ANNOTATION_P
 cap = cv2.VideoCapture(0)
 width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
 height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
-filter_value = 10
-num_frames = 30
+filter_value = 70
+
+num_frames = 20
 wrong = False
 
-while True:
+while True: 
     ret, frame = cap.read()
-
+    
+    if ret == False :
+        break
     f2 = frame
     frame1 = frame
     hsv = cv2.cvtColor(frame1, cv2.COLOR_BGR2HSV)
 
-    lower_blue = np.array([110,filter_value,filter_value])
-    upper_blue = np.array([150,255,255])
+    lower_blue = np.array([100,filter_value,filter_value])
+    upper_blue = np.array([130,255,255])
 
     # Threshold the HSV image to get only blue colors
     mask = cv2.inRange(hsv, lower_blue, upper_blue)
     res = cv2.bitwise_and(frame1,frame1, mask= mask)
     frame = cv2.cvtColor(res, cv2.COLOR_HSV2BGR)
-
+    
     image_np = np.array(frame)
-
+    
     input_tensor = tf.convert_to_tensor(np.expand_dims(image_np, 0), dtype=tf.float32)
     detections = detect_fn(input_tensor)
-
+    
     num_detections = int(detections.pop('num_detections'))
     detections = {key: value[0, :num_detections].numpy()
                   for key, value in detections.items()}
     detections['num_detections'] = num_detections
-
-
-
+    
+    
+    
     scores = detections['detection_scores']
     classes = detections['detection_classes']
     #print(detections)
     s = scores[0]
     c = classes[0]
-
+    
     #print(s, c)
-
-    if s > 0.7 and c == 0 :
+    
+    if s > 0.7 and c == 0 : 
         num_frames -= 1
     else :
         num_frames += 1
-
-    num_frames = min(num_frames, 30)
+        
+    num_frames = min(num_frames, 20)
     num_frames = max(num_frames, 0)
-
-    if num_frames <= 10 :
+    
+    if num_frames <= 5 :
         wrong = True
 
-
+      
     font = cv2.FONT_HERSHEY_SIMPLEX
     org = (10, 50)
-
+    
     if wrong :
         cv2.putText(f2, 'Wrong', org, font, 2, (0, 0, 255), 2, cv2.LINE_AA)
     else :
         cv2.putText(f2, 'Ok', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-
+        
     cv2.imshow('frame', f2)
     # detection_classes should be ints.
     detections['detection_classes'] = detections['detection_classes'].astype(np.int64)
@@ -118,8 +121,9 @@ while True:
                 min_score_thresh=.7,
                 agnostic_mode=False)
 
-    cv2.imshow('object detection',  cv2.resize(image_np_with_detections, (800, 600)))
-
+    cv2.imshow('object detection',  cv2.resize(image_np_with_detections, (400, 300)))
+    
     if cv2.waitKey(1) & 0xFF == ord('q'):
         cap.release()
         break
+cap.release()

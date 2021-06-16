@@ -28,12 +28,19 @@ class HumanGreeter(object):
         # Get the services ALTextToSpeech and ALFaceDetection.
         self.tts = session.service("ALTextToSpeech")
         self.speech_recognition = session.service("ALSpeechRecognition")
-        self.tablet = session.service("ALTabletService")
+        # self.tablet = session.service("ALTabletService")
         self.awareness = session.service("ALBasicAwareness")
 
         self.speech_recognition.pause(True)
 
+        self.speech_recognition.removeAllContext()
         self.speech_recognition.setVocabulary(["please scan me", "scan doffing please"],False)
+
+        # try:
+        #     self.speech_recognition.setVocabulary(["please scan me", "scan doffing please"],False)
+        # except RuntimeError:
+        #     self.speech_recognition.removeContext("modifiable_grammar")
+        #     self.speech_recognition.setVocabulary(["please scan me", "scan doffing please"],False)
 
         self.speech_recognition.pause(False)
         self.speech_recognition.subscribe("HumanGreeter")
@@ -50,9 +57,9 @@ class HumanGreeter(object):
             self.word_recognised = True
             print value
 
-            if 'please scan me' in value[0] and value[1] > 0.4:
+            if 'please scan me' in value[0] and value[1] > 0.3:
                 donning.main(self.session)
-            elif 'scan doffing please' in value[0] and value[1] > 0.4:
+            elif 'scan doffing please' in value[0] and value[1] > 0.3:
                 doffing.main(self.session)
 
             self.word_recognised = False
@@ -67,6 +74,9 @@ class HumanGreeter(object):
                 time.sleep(1)
         except KeyboardInterrupt:
             print "Interrupted by user, stopping HumanGreeter"
+            self.speech_recognition.pause(True)
+            self.speech_recognition.removeAllContext()
+            self.speech_recognition.pause(False)
             self.speech_recognition.unsubscribe("HumanGreeter")
             #stop
             sys.exit(0)

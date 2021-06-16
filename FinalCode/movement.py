@@ -21,11 +21,11 @@ def main(session):
 
     names = [
         "RElbowRoll",
-        "RElbowYaw",
+        # "RElbowYaw",
         "RShoulderRoll",
         "RShoulderPitch",
         "LElbowRoll",
-        "LElbowYaw",
+        # "LElbowYaw",
         "LShoulderRoll",
         "LShoulderPitch",
     ]
@@ -34,11 +34,11 @@ def main(session):
 
     angles = [
         90.0,
-        90.0,
+        # 90.0,
         -90.0,
         0.0,
         -90.0,
-        -90.0,
+        # -90.0,
         90.0,
         0.0,
     ]
@@ -61,11 +61,11 @@ def main(session):
 
     angles = [
         0.0,
-        0.0,
+        # 90.0,
         0.0,
         90.0,
         0.0,
-        0.0,
+        # -90.0,
         0.0,
         90.0,
     ]
@@ -83,6 +83,7 @@ def main(session):
     # time.sleep(2)
 
     ms.setStiffnesses(names, 0.0)
+    time.sleep(0.5)
 
     # print("Awareness paused: " + str(bas.isAwarenessPaused()))
     # bas.resumeAwareness()

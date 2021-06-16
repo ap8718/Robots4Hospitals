@@ -14,8 +14,8 @@ from PIL import Image, ImageEnhance
 import tablet
 import os
 
-GPU_IP = "root@4.tcp.ngrok.io"
-GPU_PORT = "19969"
+GPU_IP = "root@6.tcp.ngrok.io"
+GPU_PORT = "17315"
 
 
 def main(session):
@@ -36,7 +36,8 @@ def main(session):
         print str(e)
         exit(1)
     
-    tts.say('Commencing Doffing')
+    # tts.say('Commencing Doffing')
+    tts.say('Sure!')
     # tts.say('You now have the next 12 seconds to doff your gown and outer gloves. Please make sure not to touch the inside of your gown or any bare skin with your gloves on')
     tts.say('You now have the next 12 seconds to doff your gown and outer gloves.')
 
@@ -65,7 +66,8 @@ def main(session):
     f = open('Gown_doff/GownDoffingText', 'r')
     string = f.read()
     tts.say(string)
-    if string != 'Contamination detected!':
+    print(string)
+    if string != 'Contamination detected!\n':
         gownSafe = True
     time.sleep(1)
 
@@ -76,7 +78,7 @@ def main(session):
     # tts.say('You now have the next 5 seconds to doff your visor, make sure to not touch the front of the visor at any point')
     tts.say('You now have the next 5 seconds to doff your visor.')
 
-    videoRecorderProxy.setFrameRate(15.0)
+    # videoRecorderProxy.setFrameRate(15.0)
     videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "visor")
     print "Video record started."
     time.sleep(5) # Duration of video 
@@ -92,14 +94,14 @@ def main(session):
     f = open('Visor_doff/VisorDoffingText', 'r')
     string = f.read()
     tts.say(string)
-    if string != 'Contamination detected!':
+    print(string)
+    if string != 'Contamination detected!\n':
         visorSafe = True
     time.sleep(1)
 
     # GLOVE DOFFING: Recording video
     # tts.say('Please now remove your inner gloves')
     tts.say('You now have the next 10 seconds to doff your inner gloves')
-    # time.sleep(2)
 
     videoRecorderProxy.setFrameRate(15.0)
     videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "gloves")
@@ -118,14 +120,16 @@ def main(session):
     string = f.read()
     tts.say(string)
     print(string)
-    if string != "Contamination detected!":
+    print(string == "Contamination detected!\n")
+    print(string != "Contamination detected!\n")
+    if string != "Contamination detected!\n":
         glovesSafe = True
     time.sleep(1)
 
-    # print((gownSafe, visorSafe, glovesSafe))
+    print((gownSafe, visorSafe, glovesSafe))
 
     if gownSafe and visorSafe and glovesSafe:
-        tts.say('You can now leave the ward and remove your mask')
+        tts.say('Please wash your hands. You can now leave the ward and remove your mask')
     else:
         tts.say('Please seek assisstance to decontaminate yourself if you believe you have been contaminated')
     bap.resumeAwareness()

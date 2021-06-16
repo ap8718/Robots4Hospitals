@@ -36,12 +36,6 @@ class HumanGreeter(object):
         self.speech_recognition.removeAllContext()
         self.speech_recognition.setVocabulary(["please scan me", "scan doffing please"],False)
 
-        # try:
-        #     self.speech_recognition.setVocabulary(["please scan me", "scan doffing please"],False)
-        # except RuntimeError:
-        #     self.speech_recognition.removeContext("modifiable_grammar")
-        #     self.speech_recognition.setVocabulary(["please scan me", "scan doffing please"],False)
-
         self.speech_recognition.pause(False)
         self.speech_recognition.subscribe("HumanGreeter")
         self.word_recognised = False
@@ -77,6 +71,7 @@ class HumanGreeter(object):
             self.speech_recognition.pause(True)
             self.speech_recognition.removeAllContext()
             self.speech_recognition.pause(False)
+            time.sleep(1)
             self.speech_recognition.unsubscribe("HumanGreeter")
             #stop
             sys.exit(0)

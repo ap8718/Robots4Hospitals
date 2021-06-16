@@ -19,8 +19,9 @@ def main(session):
     tts.say('Okay')
 
     t1 = datetime.now()
-    move.main(session)
-    # photo.main(session)
+    os.system("python2 movement.py")
+    # move.main(session)
+    photo.main(session)
     t2 = datetime.now()
 
     tablet.hideImage()

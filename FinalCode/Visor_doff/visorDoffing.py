@@ -18,10 +18,13 @@ reject_ratio = 1.5
 lamda = 10
 
 p1, p2, p3 = func.visor_doff(threshold, threshold_z, reject_ratio, lamda,
-INPUT_MP4_PATH='example.avi',
-OUTPUT_MP4_PATH='example_output.mp4',
+INPUT_MP4_PATH='visor.avi',
+OUTPUT_MP4_PATH='visor_output.mp4',
 MODEL_PATH='visor_track+.pt')
 
 print("Maximum obj score achieved: {0}".format(p1))
 print("Number of continuous frames with obj score > lamda: {0}".format(p2))
 print("Number of overall frames with obj score > lamda : {0}".format(p3))
+
+# f = open('VisorDoffingText', 'w')
+

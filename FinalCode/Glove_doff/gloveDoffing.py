@@ -38,9 +38,16 @@ def detect_fn(image):
     return detections
 
 category_index = label_map_util.create_category_index_from_labelmap(ANNOTATION_PATH+'/label_map.pbtxt')
-cap = cv2.VideoCapture(0)
-width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+cap = cv2.VideoCapture('gloves.avi')
+# width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
+# height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
+fourcc = cv.VideoWriter_fourcc(*'MP4V')
+fps = cap.get(cv.CAP_PROP_FPS)
+fcount  = cap.get(cv.CAP_PROP_FRAME_COUNT)
+videoWidth = int(cap.get(cv.CAP_PROP_FRAME_WIDTH))
+videoHeight = int(cap.get(cv.CAP_PROP_FRAME_HEIGHT))
+out = cv.VideoWriter('gloves_output.mp4', fourcc, fps, (videoWidth,videoHeight))
+out_filtered = cv.VideoWriter('gloves_output_filtered.mp4', fourcc, fps, (videoWidth,videoHeight))
 filter_value = 70
 
 num_frames = 15
@@ -103,7 +110,7 @@ while True:
     else :
         cv2.putText(f2, 'Ok', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
         
-    cv2.imshow('frame', f2)
+#    cv2.imshow('frame', f2)
     # detection_classes should be ints.
     detections['detection_classes'] = detections['detection_classes'].astype(np.int64)
 
@@ -121,9 +128,11 @@ while True:
                 min_score_thresh=.7,
                 agnostic_mode=False)
 
-    cv2.imshow('object detection',  cv2.resize(image_np_with_detections, (400, 300)))
+    out.write(f2)
+    out_filtered.write(image_np_with_detections)
+#    cv2.imshow('object detection',  cv2.resize(image_np_with_detections, (400, 300)))
     
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        cap.release()
-        break
+#    if cv2.waitKey(1) & 0xFF == ord('q'):
+#        cap.release()
+#        break
 cap.release()

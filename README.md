@@ -4,6 +4,10 @@
 
 Welcome to the Robots4Hospitals repository! For our Year 3 MEng Electrical and Electronics Engineering Group Project at Imperial College London, we have developed an autonomous robot-based system to perform full inspection of both the PPE donning and doffing processes.
 
+- [Leaflet](https://imperiallondon.sharepoint.com/sites/Robots4Hospitals-EE/Shared%20Documents/General/Project%20Leaflet.pdf)
+- [Video](https://imperiallondon.sharepoint.com/sites/Robots4Hospitals-EE/Shared%20Documents/General/R4HVideo.mp4)
+- [Documentation]()
+
 ## Requirements
 
 You MUST have a Linux machine to connect to Pepper the robot.
@@ -79,7 +83,10 @@ Next, on another terminal window, run the HTTP tunneling to publicly host the co
 ```shell
 $ ./ngrok http 80
 ```
-Verify that the server is running by pasting the URL displayed next to "Forwarding" and seeing if it shows the same content.
+Verify that the server is running by pasting the URL displayed next to "Forwarding" (boxed in red) and seeing if it shows the same content.
+
+![Screenshot of ngrok HTTP interface with URL highlighted in red](https://github.com/ap8718/Robots4Hospitals/blob/main/FinalCode/imagesFromPepper/ngrokHTTPurl.png)
+
 Lastly, in `tablet.py`, change the URL to the one currently being used to publicly host your localhost server.
 
 ## Contributing

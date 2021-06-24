@@ -35,10 +35,8 @@ def main(session):
         print "Error when creating ALVideoRecorder proxy:"
         print str(e)
         exit(1)
-    
-    # tts.say('Commencing Doffing')
+
     tts.say('Sure!')
-    # tts.say('You now have the next 12 seconds to doff your gown and outer gloves. Please make sure not to touch the inside of your gown or any bare skin with your gloves on')
     tts.say('You now have the next 12 seconds to doff your gown and outer gloves.')
 
     # Motion for recording video
@@ -53,7 +51,7 @@ def main(session):
     videoRecorderProxy.setFrameRate(15.0)
     videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "gown")
     print "Video record started."
-    time.sleep(12) # Duration of video 
+    time.sleep(12) # Duration of video
     videoInfo = videoRecorderProxy.stopRecording()
     tts.say("Video taken!")
     print "Video was saved on the robot: ", videoInfo[1]
@@ -75,13 +73,11 @@ def main(session):
     time.sleep(5)
 
     # VISOR DOFFING: Recording video
-    # tts.say('You now have the next 5 seconds to doff your visor, make sure to not touch the front of the visor at any point')
     tts.say('You now have the next 5 seconds to doff your visor.')
 
-    # videoRecorderProxy.setFrameRate(15.0)
     videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "visor")
     print "Video record started."
-    time.sleep(5) # Duration of video 
+    time.sleep(5) # Duration of video
     videoInfo = videoRecorderProxy.stopRecording()
     tts.say("Video taken!")
     print "Video was saved on the robot: ", videoInfo[1]
@@ -100,13 +96,12 @@ def main(session):
     time.sleep(1)
 
     # GLOVE DOFFING: Recording video
-    # tts.say('Please now remove your inner gloves')
     tts.say('You now have the next 10 seconds to doff your inner gloves')
 
     videoRecorderProxy.setFrameRate(15.0)
     videoRecorderProxy.startRecording("/home/nao/recordings/cameras", "gloves")
     print "Video record started."
-    time.sleep(10) # Duration of video 
+    time.sleep(10) # Duration of video
     videoInfo = videoRecorderProxy.stopRecording()
     tts.say("Video taken!")
     print "Video was saved on the robot: ", videoInfo[1]

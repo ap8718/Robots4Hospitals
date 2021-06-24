@@ -8,6 +8,7 @@ import almath
 from PIL import Image, ImageEnhance
 import tablet
 
+# Change this to match GPU machine IP and port
 IP = "root@2.tcp.ngrok.io"
 PORT = "18972"
 
@@ -20,14 +21,10 @@ def main(session):
     """
 
     # Get the service ALVideoDevice.
-
-    #video_service = session.service("ALVideoDevice")
-
     video_service = session.service("ALVideoDevice")
 
 
     # Register a Generic Video Module
-    # resolution = vision_definitions.k4VGA
     resolution = vision_definitions.kVGA
     colorSpace = vision_definitions.kRGBColorSpace
     fps = 20
@@ -70,9 +67,6 @@ def main(session):
     # Save the image.
     img.save(r"imagesFromPepper/analysis0.png", "PNG")
 
-    #result = merge_images(r"imagesFromPepper/camImage1.png", r"imagesFromPepper/camImage2.png")
-    #result.save(r"imagesFromPepper/camImage.png", "PNG")
-
     tts.say('Picture taken')
     tablet.main(session)
     bap.resumeAwareness()
@@ -104,17 +98,15 @@ def main(session):
 
 if __name__ == "__main__":
 
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument("--ip", type=str, default="127.0.0.1",
-    #                     help="Robot IP address. On robot or Local Naoqi: use '127.0.0.1'.")
-    # parser.add_argument("--port", type=int, default=9559,
-    #                     help="Naoqi port number")
-
-    # args = parser.parse_args()
     ip = "10.0.0.83"
     port = 9559
-    # tts = ALProxy("ALTextToSpeech", ip, port)
-    # tts.say("Connected")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ip", type=str, default=ip,
+                        help="Robot IP address. On robot or Local Naoqi: use '127.0.0.1'.")
+    parser.add_argument("--port", type=int, default=port,
+                        help="Naoqi port number")
+
+    args = parser.parse_args()
     session = qi.Session()
     try:
         session.connect("tcp://" + ip + ":" + str(port))

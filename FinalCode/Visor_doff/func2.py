@@ -11,8 +11,6 @@ def compute_score(z_pos, z_neg, threshold_z):
   min_neg = -threshold_z if abs(min_neg) < threshold_z else min_neg
   threshold = 2 * threshold_z
 
-  #print(z_pos)
-  #print(len(z_pos))
   for i in z_pos:
     if i <= threshold_z:
       sum += 1.5
@@ -198,11 +196,6 @@ def visor_doff(threshold, threshold_z, area_bbox, reject_ratio, lamda, INPUT_MP4
       if box_list and (not box_list_2): # trick to avoid mediapipe bugs
         x1, x2, y1, y2 = videoWidth-int(xmax), videoWidth-int(xmin),int(ymin), int(ymax)
         cv.rectangle(results2.imgs[0],(x1,y2),(x2,y1),(255,0,0),3)
-      #  max_cnt = prev_max_cnt
-      #  max_score = prev_max_score
-      #  cnt = 0
-      #  score = 0
-      #  cv.putText(results2.imgs[0], "Rejected", (10,160), cv.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 1, cv.LINE_AA)
 
       max_text1 = 'Max touch: ' + str(max_cnt)
       max_text2 = 'Max score: ' + str(round(max_score, 2))
@@ -226,13 +219,7 @@ def visor_doff(threshold, threshold_z, area_bbox, reject_ratio, lamda, INPUT_MP4
       cv.putText(results2.imgs[0], max_text1, (0,videoHeight-60), cv.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 1, cv.LINE_AA)
       cv.putText(results2.imgs[0], max_text2, (0,videoHeight-30), cv.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 1, cv.LINE_AA)
 
-      #if cnt == -1 and visor_area < reject_ratio * area_bbox:
-      #  cv.putText(results2.imgs[0], "Rejected", (0,30), cv.FONT_HERSHEY_COMPLEX, 1, (0, 255, 0), 1, cv.LINE_AA)
       out.write(results2.imgs[0])
-
-      #debug stuff
-      #if (cnt > 10):
-      #  cv2_imshow(results2.imgs[0])
 
       if (prev_max_score > lamda) and (max_score > lamda):
         max_h_frame_continuous += 1

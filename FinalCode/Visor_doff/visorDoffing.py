@@ -5,8 +5,8 @@ import torch
 import func
 
 #take a static image with hands very close to visor but without contact
-threshold, threshold_z = func.get_rej_threshold(INPUT_IMAGE_PATH='example.png', 
-OUTPUT_IMAGE_PATH='example_output.jpg') 
+threshold, threshold_z = func.get_rej_threshold(INPUT_IMAGE_PATH='example.png',
+OUTPUT_IMAGE_PATH='example_output.jpg')
 
 #define some parameters:
 #reject_ratio: range from 1 to infinity, the smaller the more
@@ -25,6 +25,3 @@ MODEL_PATH='visor_track+.pt')
 print("Maximum obj score achieved: {0}".format(p1))
 print("Number of continuous frames with obj score > lamda: {0}".format(p2))
 print("Number of overall frames with obj score > lamda : {0}".format(p3))
-
-# f = open('VisorDoffingText', 'w')
-

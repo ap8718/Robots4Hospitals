@@ -6,7 +6,6 @@ from PIL import Image
 
 mp_drawing = mp.solutions.drawing_utils
 mp_pose = mp.solutions.pose
-# mp_holistic = mp.solutions.holistic
 
 def inference(box_list):
   gown = incomplete_gown = False
@@ -108,9 +107,9 @@ def analyseGownDoffing(image, results, incomplete_gown, incomplete_gown_list):
                 danger = True
                 danger_text = 'Neck Touch Danger'
 
-        # if(right_dist_elbow < 0.37 or left_dist_elbow < 0.37):
-        #     danger = True
-        #     danger_text = 'Arm Touch Danger'
+        if(right_dist_elbow < 0.37 or left_dist_elbow < 0.37):
+            danger = True
+            danger_text = 'Arm Touch Danger'
 
         if incomplete_gown:
           for l in incomplete_gown_list:
@@ -136,7 +135,6 @@ def analyseGownDoffing(image, results, incomplete_gown, incomplete_gown_list):
         cv2.circle(image, (cx19, cy19), 5, handColour, cv2.FILLED)
         cv2.circle(image, (cx21, cy21), 5, handColour, cv2.FILLED)
 
-        # cv2.line(image, (cx19, cy19), (cx7, cy7), (0, right_dist_shoulder, 255-right_dist_shoulder), 3)
         cv2.circle(image, (cx16, cy16), 5, handColour, cv2.FILLED)
         cv2.circle(image, (cx18, cy18), 5, handColour, cv2.FILLED)
         cv2.circle(image, (cx20, cy20), 5, handColour, cv2.FILLED)
@@ -185,6 +183,7 @@ def main():
               print("EOF. Exited")
               break
             image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            # Uncomment to see performance with Pepper's resolution
             # image = cv2.resize(image, dsize=(480, 320), interpolation = cv2.INTER_CUBIC)
 
             res = model(image, size=640)
@@ -207,14 +206,12 @@ def main():
             # Recolor image back to BGR for rendering
             image_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
             # Pose Detections
-            # mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_pose.POSE_CONNECTIONS)
             danger, image = analyseGownDoffing(image_bgr, results, incomplete_gown, incomplete_gown_list)
             if danger:
                 print("DANGER")
                 dangerList.append(1)
             if len(dangerList) == 5:
                 sendDangerSignal = True
-                # dangerList = []
 
             f = open("GownDoffingText", "w")
 
@@ -226,15 +223,7 @@ def main():
 
             out.write(image)
 
-            #if danger:
-            #  print("DANGER")
-            # cv2.imshow('Raw Webcam Feed', image)
-
-            # if cv2.waitKey(10) & 0xFF == ord('q'):
-            #     break
-
     cap.release()
-    # cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     main()

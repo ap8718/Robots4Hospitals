@@ -185,11 +185,6 @@ def detect_gloves(img, showImg = False):
 
     result = ''
 
-#    if (num_hands == 2 and num_filt_hands == 2):
-#        result = 'Both gloves detected'
-#    else:
-#        result = 'The gloves are not correctly worn'
-
     print("\n num_hands = " + str(num_hands))
     print("num_filt_hands = " + str(num_filt_hands) + "\n")
 
@@ -218,14 +213,9 @@ for i in range(0,1):
     img =cv2.imread(r"imagesFromPepper/analysis" + str(i) + ".png")
     height, width, channels = img.shape
     result = detect_gloves(img, showImg = True)
-#    resultlist.append(result)
 
-#print(resultlist)
-#mode = max(set(resultlist), key=resultlist.count)
 
 print("\n" + result + "\n")
-#f = open('Results/GloveText','w')
-#f.write(result)
 
 
 #### GOWN DETECTOR

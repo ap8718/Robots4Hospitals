@@ -39,8 +39,6 @@ def detect_fn(image):
 
 category_index = label_map_util.create_category_index_from_labelmap(ANNOTATION_PATH+'/label_map.pbtxt')
 cap = cv2.VideoCapture('gloves.avi')
-# width = int(cap.get(cv2.CAP_PROP_FRAME_WIDTH))
-# height = int(cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
 fourcc = cv.VideoWriter_fourcc(*'MP4V')
 fps = cap.get(cv.CAP_PROP_FPS)
 fcount  = cap.get(cv.CAP_PROP_FRAME_COUNT)
@@ -53,9 +51,9 @@ filter_value = 70
 num_frames = 15
 wrong = False
 
-while True: 
+while True:
     ret, frame = cap.read()
-    
+
     if ret == False :
         break
     f2 = frame
@@ -69,48 +67,44 @@ while True:
     mask = cv2.inRange(hsv, lower_blue, upper_blue)
     res = cv2.bitwise_and(frame1,frame1, mask= mask)
     frame = cv2.cvtColor(res, cv2.COLOR_HSV2BGR)
-    
+
     image_np = np.array(frame)
-    
+
     input_tensor = tf.convert_to_tensor(np.expand_dims(image_np, 0), dtype=tf.float32)
     detections = detect_fn(input_tensor)
-    
+
     num_detections = int(detections.pop('num_detections'))
     detections = {key: value[0, :num_detections].numpy()
                   for key, value in detections.items()}
     detections['num_detections'] = num_detections
-    
-    
-    
+
+
+
     scores = detections['detection_scores']
     classes = detections['detection_classes']
-    #print(detections)
     s = scores[0]
     c = classes[0]
-    
-    #print(s, c)
-    
-    if s > 0.7 and c == 0 : 
+
+    if s > 0.7 and c == 0 :
         num_frames -= 1
     elif s > 0.7:
         num_frames += 1
-        
+
     num_frames = min(num_frames, 15)
     num_frames = max(num_frames, 0)
-    
+
     if num_frames <= 4 :
         wrong = True
 
-      
+
     font = cv2.FONT_HERSHEY_SIMPLEX
     org = (10, 50)
-    
+
     if wrong :
         cv2.putText(f2, 'Wrong', org, font, 2, (0, 0, 255), 2, cv2.LINE_AA)
     else :
         cv2.putText(f2, 'Ok', org, font, 2, (0, 255, 0), 2, cv2.LINE_AA)
-        
-#    cv2.imshow('frame', f2)
+
     # detection_classes should be ints.
     detections['detection_classes'] = detections['detection_classes'].astype(np.int64)
 
@@ -130,9 +124,4 @@ while True:
 
     out.write(f2)
     out_filtered.write(image_np_with_detections)
-#    cv2.imshow('object detection',  cv2.resize(image_np_with_detections, (400, 300)))
-    
-#    if cv2.waitKey(1) & 0xFF == ord('q'):
-#        cap.release()
-#        break
 cap.release()

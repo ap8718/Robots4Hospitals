@@ -8,24 +8,12 @@ def main(session):
 
     ms = session.service("ALMotion")
     tts = session.service("ALTextToSpeech")
-    # bas = session.service("ALBasicAwareness")
-    # bas = ALProxy("ALBasicAwareness", "10.0.0.83", 9559)
-
-    # ms.setStiffnesses("Body", 0.0)
-    # bas.pauseAwareness()
-
-    # print("Awareness paused: " + str(bas.isAwarenessPaused()))
-
-    # ms.setStiffnesses("LArm", 1.0)
-    # ms.setStiffnesses("RArm", 1.0)
 
     names = [
         "RElbowRoll",
-        # "RElbowYaw",
         "RShoulderRoll",
         "RShoulderPitch",
         "LElbowRoll",
-        # "LElbowYaw",
         "LShoulderRoll",
         "LShoulderPitch",
     ]
@@ -34,11 +22,9 @@ def main(session):
 
     angles = [
         90.0,
-        # 90.0,
         -90.0,
         0.0,
         -90.0,
-        # -90.0,
         90.0,
         0.0,
     ]
@@ -61,11 +47,9 @@ def main(session):
 
     angles = [
         0.0,
-        # 90.0,
         0.0,
         90.0,
         0.0,
-        # -90.0,
         0.0,
         90.0,
     ]
@@ -80,14 +64,9 @@ def main(session):
     print("Angles: " + str(angs))
 
     ms.setStiffnesses(names, 0.05)
-    # time.sleep(2)
 
     ms.setStiffnesses(names, 0.0)
     time.sleep(0.5)
-
-    # print("Awareness paused: " + str(bas.isAwarenessPaused()))
-    # bas.resumeAwareness()
-    # print("Awareness paused: " + str(bas.isAwarenessPaused()))
 
     print("All done!")
 
@@ -99,4 +78,7 @@ if __name__ == "__main__":
         print ("Can't connect to Naoqi at ip '10.0.0.83' on port '9559'.\n"
                "Please check your script arguments. Run with -h option for help.")
         sys.exit(1)
+    bas = session.service("ALBasicAwareness")
+    bas.pauseAwareness()
     main(session)
+    bas.resumeAwareness()

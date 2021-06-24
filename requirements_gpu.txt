@@ -1,6 +1,6 @@
 # pip3 install -r requirements_gpu.txt
-pip3 install tensorflow
-pip3 install mediapipe
+tensorflow
+mediapipe
 # base ----------------------------------------
 matplotlib>=3.2.2
 numpy>=1.18.5

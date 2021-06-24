@@ -1,8 +1,0 @@
-item { 
-	name:'hand'
-	id:1
-}
-item { 
-	name:'glove'
-	id:2
-}

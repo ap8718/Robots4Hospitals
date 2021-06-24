@@ -20,6 +20,7 @@ You MUST have a Linux machine to connect to Pepper the robot.
 - [Tensorflow Object Detection API](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/install.html)
 - [MediaPipe](https://google.github.io/mediapipe/getting_started/python.html)
 - [ngrok](https://ngrok.com/download) (You must also make an account. Free account is sufficient)
+- [YOLO5](https://github.com/ultralytics/yolov5)
 
 ## Connecting to Pepper
 First, you must install the Python SDK on whichever terminal you are using to connect to Pepper. Change directory to Robots4Hospitals and run the following command to export the Python path to the within the python-sdk folder:

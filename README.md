@@ -13,7 +13,7 @@ Welcome to the Robots4Hospitals repository! For our Year 3 MEng Electrical and E
 
 You MUST have a Linux machine to connect to Pepper the robot.
 - Linux machine
-- [Python 3](https://www.python.org/downloads/) (for Computer Vision models)
+- [Python >= 3.6.0](https://www.python.org/downloads/) (for Computer Vision models)
 - [Python 2.7](https://www.python.org/downloads/) on Linux machine (for Robot)
 - [Pepper Python SDK](http://doc.aldebaran.com/2-5/dev/python/install_guide.html)
 - [OpenCV](https://pypi.org/project/opencv-python/)
@@ -21,6 +21,12 @@ You MUST have a Linux machine to connect to Pepper the robot.
 - [MediaPipe](https://google.github.io/mediapipe/getting_started/python.html)
 - [ngrok](https://ngrok.com/download) (You must also make an account. Free account is sufficient)
 - [YOLO5](https://github.com/ultralytics/yolov5)
+
+$ git clone https://github.com/ap8718/Robots4Hospitals
+$ cd Robots4Hospitals
+$ pip3 install -r requirements_cpu.txt (if using cpu)
+$ pip3 install -r requirements_gpu.txt (if using gpu)
+
 
 ## Connecting to Pepper
 First, you must install the Python SDK on whichever terminal you are using to connect to Pepper. Change directory to Robots4Hospitals and run the following command to export the Python path to the within the python-sdk folder:

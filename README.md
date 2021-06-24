@@ -68,7 +68,7 @@ $ python completeGPULoop.py
 You should now be able to say the key phrases and start the analysis for donning or doffing.
 
 ## Displaying images on the tablet
-To display the image takne by Pepper on its tablet, we must publicly host the image. We will use ngrok to publicly host the image.
+To display the image taken by Pepper on its tablet, we must publicly host the image. We will use ngrok to publicly host the image.
 
 First, on a separate terminal window, change directory to `imagesFromPepper/` and start a localhost server on port 80:
 ```shell

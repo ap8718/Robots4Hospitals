@@ -1,0 +1,37 @@
+pip3 install tensorflow
+pip3 install tqdm
+pip3 install numpy
+pip3 install pillow
+pip3 install scipy
+pip3 install pyyaml
+pip3 install matplotlib
+pip3 install opencv-python==4.1.2.30
+pip3 install mediapipe
+pip3 install torch==1.7.0+cpu torchvision==0.6.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
+
+**checklist
+# pip3 install -r requirements_cpu.txt
+
+# base ----------------------------------------
+matplotlib>=3.2.2
+numpy>=1.18.5
+opencv-python>=4.1.2
+Pillow
+PyYAML>=5.3.1
+scipy>=1.4.1
+torch>=1.7.0
+torchvision>=0.8.1
+tqdm>=4.41.0
+
+# logging -------------------------------------
+tensorboard>=2.4.1
+# wandb
+
+# plotting ------------------------------------
+seaborn>=0.11.0
+pandas
+
+# export --------------------------------------
+# coremltools>=4.1
+# onnx>=1.8.1
+# scikit-learn==0.19.2  # for coreml quantization

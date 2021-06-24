@@ -22,7 +22,19 @@ You MUST have a Linux machine to connect to Pepper the robot.
 - [ngrok](https://ngrok.com/download) (You must also make an account. Free account is sufficient)
 
 ## Connecting to Pepper
-Once Pepper is booted, please press (do not hold) the power button located on its check behind the tablet. It should say "Hello, I'm Pepper. My internet address is <ROBOT_IP>". This is the IP you will use to connect to Pepper. The port will always be 9559 with Pepper. If Pepper says "I can't connect to the network" please reboot or hard reboot the robot until connection is established.
+First, you must install the Python SDK on whichever terminal you are using to connect to Pepper. Change directory to Robots4Hospitals and run the following command to export the Python path to the within the python-sdk folder:
+
+```shell
+$ export PYTHONPATH=${PYTHONPATH}:python-sdk/lib/python2.7/site-packages
+```
+Verify that the installation is successful by importing the `qi` or `naoqi` library:
+
+```shell
+$ python2 -c "import qi"
+```
+If no error message comes up, the installation has been successful. Note that this only works on Linux. Please check the [Installation Guide](http://doc.aldebaran.com/2-5/dev/python/install_guide.html) for installation on a different OS, although there is no guarantee of success.
+
+Next, boot up Pepper by pressing the power button located on its chest behind the tablet. The booting sequence should take about a minute. Once Pepper is booted, please press (do not hold) the power button. It should say "Hello, I'm Pepper. My internet address is <ROBOT_IP>". This is the IP you will use to connect to Pepper. The port will always be 9559 with Pepper. If Pepper says "I can't connect to the network" please reboot or hard reboot the robot until connection is established.
 
 The program should be run from a terminal in the same directory as `main.py` as shown in the following.
 

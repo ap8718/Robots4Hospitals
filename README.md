@@ -22,6 +22,7 @@ You MUST have a Linux machine to connect to Pepper the robot.
 - [ngrok](https://ngrok.com/download) (You must also make an account. Free account is sufficient)
 - [YOLO5](https://github.com/ultralytics/yolov5)
 
+CV models require python >= 3.6.0 and requirements.txt dependencies
 ```shell
 $ git clone https://github.com/ap8718/Robots4Hospitals
 $ cd Robots4Hospitals

@@ -154,7 +154,9 @@ def analyseGownDoffing(image, results, incomplete_gown, incomplete_gown_list):
 
     return danger, image
 
-INPUT_MP4_PATH = 'test.avi'
+#INPUT_MP4_PATH = 'test.avi'
+#uncomment for pepper avi videos
+INPUT_MP4_PATH = 'test.mp4'
 OUTPUT_MP4_PATH = 'output.mp4'
 
 def main():

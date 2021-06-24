@@ -30,6 +30,22 @@ $ pip3 install -r requirements_cpu.txt (if using cpu)
 $ pip3 install -r requirements_gpu.txt (if using gpu)
 ```
 
+## Get started
+
+As an example, let's try our exciting gown doffing models by inferencing a prepared mp4 video:
+```shell
+$ cd FinalCode/Gown_doff
+$ python3 gownDoffing.py
+```
+This will generate an output.mp4 videos under the gown_doff directory, let's visualize it!
+![Alt Text](https://github.com/ap8718/Robots4Hospitals/blob/main/Archives/m1.gif)
+
+![Alt Text](https://github.com/ap8718/Robots4Hospitals/blob/main/Archives/m2.gif)
+
+
+Alternatively, use colab to get started in no time: [Quick start in colab](https://github.com/ap8718/Robots4Hospitals/blob/main/Gown_doff_example.ipynb)
+
+
 
 ## Connecting to Pepper
 First, you must install the Python SDK on whichever terminal you are using to connect to Pepper. Change directory to Robots4Hospitals and run the following command to export the Python path to the within the python-sdk folder:

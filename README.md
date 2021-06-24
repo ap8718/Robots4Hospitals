@@ -36,7 +36,7 @@ If no error message comes up, the installation has been successful. Note that th
 
 Next, boot up Pepper by pressing the power button located on its chest behind the tablet. The booting sequence should take about a minute. Once Pepper is booted, please press (do not hold) the power button. It should say "Hello, I'm Pepper. My internet address is <ROBOT_IP>". This is the IP you will use to connect to Pepper. The port will always be 9559 with Pepper. If Pepper says "I can't connect to the network" please reboot or hard reboot the robot until connection is established.
 
-The program should be run from a terminal in the same directory as `main.py` as shown in the following.
+The program should be run from a terminal in the same directory as `main.py`. Change directory into `FinalCode/` and run `main.py` as shown in the following.
 
 ```shell
 $ python2 main.py --ip '<ROBOT_IP>'
@@ -76,7 +76,7 @@ $ python gpuInit.py
 ```
 Now, in your remote machine, change directories to `completeGPULoop.py` and run it on python while running `main.py` on the Linux machine:
 ```shell
-$ python completeGPULoop.py
+$ python gpuLoop.py
 ```
 You should now be able to say the key phrases and start the analysis for donning or doffing.
 

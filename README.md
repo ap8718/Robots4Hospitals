@@ -40,7 +40,7 @@ $ python3 gownDoffing.py
 This will generate an output.mp4 videos under the gown_doff directory, let's visualize it!
 
 
-Alternatively, use colab to get started in no time: [Quick start](https://github.com/ap8718/Robots4Hospitals/blob/main/Gown_doff_example.ipynb)
+Alternatively, use colab to get started in no time: [Quick start in colab](https://github.com/ap8718/Robots4Hospitals/blob/main/Gown_doff_example.ipynb)
 
 
 

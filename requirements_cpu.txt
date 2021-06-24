@@ -1,16 +1,17 @@
-pip3 install tensorflow
-pip3 install tqdm
-pip3 install numpy
-pip3 install pillow
-pip3 install scipy
-pip3 install pyyaml
-pip3 install matplotlib
-pip3 install opencv-python==4.1.2.30
-pip3 install mediapipe
-pip3 install torch==1.7.0+cpu torchvision==0.6.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
+# pip3 install -r requirements_cpu.txt
+
+tensorflow
+tqdm
+numpy
+pillow
+scipy
+pyyaml
+matplotlib
+opencv-python==4.1.2.30
+mediapipe
+torch==1.7.0+cpu torchvision==0.6.1+cpu -f https://download.pytorch.org/whl/torch_stable.html
 
 **checklist
-# pip3 install -r requirements_cpu.txt
 
 # base ----------------------------------------
 matplotlib>=3.2.2

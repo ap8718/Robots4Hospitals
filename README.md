@@ -32,13 +32,13 @@ $ pip3 install -r requirements_gpu.txt (if using gpu)
 
 ## Get started
 
-Let's try our gown doffing models by inferencing a prepared mp4 video:
+Let's try our exciting gown doffing models by inferencing a prepared mp4 video:
 ```shell
 $ cd FinalCode/Gown_doff
 $ python3 gownDoffing.py
 ```
 This will generate an output.mp4 videos under the gown_doff directory, let's visualize it!
-
+![Alt Text](https://github.com/ap8718/Robots4Hospitals/blob/main/Archives/m1.gif)
 
 Alternatively, use colab to get started in no time: [Quick start in colab](https://github.com/ap8718/Robots4Hospitals/blob/main/Gown_doff_example.ipynb)
 

@@ -37,8 +37,10 @@ Let's try our gown doffing models by inferencing a prepared mp4 video:
 $ cd FinalCode/Gown_doff
 $ python3 gownDoffing.py
 ```
-Alternatively, use colab to get started in no time: https://github.com/ap8718/Robots4Hospitals/blob/main/Gown_doff_example.ipynb
 This will generate an output.mp4 videos under the gown_doff directory, let's visualize it!
+
+
+Alternatively, use colab to get started in no time: [Quick start](https://github.com/ap8718/Robots4Hospitals/blob/main/Gown_doff_example.ipynb)
 
 
 
